@@ -1,0 +1,32 @@
+{
+  "name": "rollbar-react-native",
+  "version": "0.1.0",
+  "description": "Library for reporting errors to Rollbar from React Native apps",
+  "main": "index.js",
+  "repository": "https://github.com/rollbar/rollbar-react-native.git",
+  "license": "MIT",
+  "keywords": [
+    "react-native"
+  ],
+  "scripts": {
+    "prepublish": "mkdir -p lib && babel src/Rollbar.js --presets=react-native -s -o lib/Rollbar.js"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.40"
+  },
+  "dependencies": {
+    "promise": "^8.0.1",
+    "rollbar": "^2.2.7",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-native": "^3.0.2"
+  },
+  "rnpm": {
+    "android": {
+      "packageInstance": "RollbarReactNative.getPackage()",
+      "packageImportPath": "import com.rollbar.RollbarReactNative;"
+    }
+  }
+}
