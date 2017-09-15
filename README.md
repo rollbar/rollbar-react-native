@@ -1,3 +1,7 @@
+# WORK IN PROGRESS
+
+Ignore this README and do not attempt to use this until this warning is removed!
+
 # rollbar-react-native
 
 ## Getting started
