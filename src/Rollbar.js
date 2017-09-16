@@ -12,7 +12,6 @@ export class Client {
       this.config = new Configuration(config);
     }
 
-    console.log('before break: ', this.config.toJSON());
     this.rollbar = new Rollbar(this.config.toJSON());
 
     if (NativeClient) {
@@ -119,6 +118,7 @@ export class Configuration {
   toJSON = () => {
     return {
       accessToken: this.accessToken,
+      endpoint: this.endpoint,
       payload: {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
@@ -131,67 +131,4 @@ export class Configuration {
       }
     };
   }
-}
-
-export class Item {
-  constructor(accessToken, obj, level, extra) {
-    this.accessToken = accessToken;
-    if (obj instanceof Error) {
-      this.errorClass = obj.constructor.name;
-      this.errorMessage = obj.message;
-      this.stack = obj.stack;
-    } else {
-      this.message = obj;
-    }
-    this.level = level;
-    this.metadata = extra || {};
-    this.user = {};
-  }
-
-  addMetadata = (section, key, value) => {
-    if (!this.metadata[section]) {
-      this.metadata[section] = {};
-    }
-    this.metadata[section][key] = value;
-  }
-
-  toJSON = () => {
-    return {
-      accessToken: this.accessToken,
-      errorClass: this.errorClass,
-      errorMessage: this.errorMessage,
-      stack: this.stack,
-      message: this.message,
-      level: this.level,
-      metadata: typedMap(this.metadata),
-      user: this.user
-    }
-  }
-}
-
-const allowedMapObjectTypes = ['string', 'number', 'boolean'];
-
-const typedMap = function(map) {
-  const output = {};
-  for (const key in map) {
-    if (!{}.hasOwnProperty.call(map, key)) {
-      continue;
-    }
-
-    const value = map[key];
-
-    if (value == undefined || (typeof value === 'number' && isNaN(value))) {
-      output[key] = {type: 'string', value: String(value)}
-    } else if (typeof value === 'object') {
-      output[key] = {type: 'map', value: typedMap(value)};
-    } else {
-      const type = typeof value;
-      if (allowedMapObjectTypes.includes(type)) {
-        output[key] = {type: type, value: value};
-      } else {
-        console.warn(`Could not serialize metadata for '${key}': Invalid type '${type}'`);
-      }
-    }
-  }
-  return output;
 }

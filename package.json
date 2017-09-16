@@ -15,9 +15,9 @@
     "react-native": ">=0.40"
   },
   "dependencies": {
+    "buffer": "^5.0.7",
     "promise": "^8.0.1",
-    "rollbar": "^2.2.7",
-    "url": "^0.11.0"
+    "rollbar": "^2.2.7"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
