@@ -16,9 +16,14 @@ import com.facebook.react.bridge.ReactMethod;
 
 import android.content.Context;
 
-import com.rollbar.android.*;
+import com.rollbar.android.Rollbar;
+import com.rollbar.notifier.config.Config;
+import com.rollbar.notifier.config.ConfigBuilder;
+import com.rollbar.notifier.config.ConfigProvider;
 
 public class RollbarReactNative extends ReactContextBaseJavaModule {
+  private static final String REACT_NATIVE = "react-native";
+  private static final String NOTIFIER_VERSION = "0.1.0";
   private ReactContext reactContext;
 
   public static ReactPackage getPackage() {
@@ -30,8 +35,15 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
     this.reactContext = reactContext;
   }
 
-  public static void start(Context context, String accessToken, String environment) {
-    Rollbar.init(context, accessToken, environment);
+  public static void init(Context context, String accessToken, String environment) {
+    Rollbar.init(context, accessToken, environment, true, false, new ConfigProvider() {
+      @Override
+      public Config provide(ConfigBuilder builder) {
+        return builder
+          .framework(REACT_NATIVE)
+          .build();
+      }
+    });
   }
 
   @Override
@@ -40,21 +52,31 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void start(ReadableMap options) {
-    // Rollbar.configure(options)
+  public void init(ReadableMap options) {
+    final String environment = options.hasKey("environment") ? options.getString("environment") : null;
+    if (environment != null) {
+      Rollbar.instance().configure(new ConfigProvider() {
+        @Override
+        public Config provide(ConfigBuilder builder) {
+          return builder
+            .environment(environment)
+            .build();
+        }
+      });
+    }
   }
 
 	@ReactMethod
-  public void setUser(ReadableMap userInfo) {
-      String userId = userInfo.hasKey("id") ? userInfo.getString("id") : null;
-      String email = userInfo.hasKey("email") ? userInfo.getString("email") : null;
-      String name = userInfo.hasKey("name") ? userInfo.getString("name") : null;
-      Rollbar.setPersonData(userId, name, email);
+  public void setPerson(ReadableMap personInfo) {
+      String userId = personInfo.hasKey("id") ? personInfo.getString("id") : null;
+      String email = personInfo.hasKey("email") ? personInfo.getString("email") : null;
+      String name = personInfo.hasKey("name") ? personInfo.getString("name") : null;
+      Rollbar.instance().setPersonData(userId, name, email);
   }
 
   @ReactMethod
-  public void clearUser() {
-      Rollbar.setPersonData(null, null, null);
+  public void clearPerson() {
+      Rollbar.instance().clearPersonData();
   }
 }
 
