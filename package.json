@@ -17,7 +17,7 @@
   "dependencies": {
     "buffer": "^5.0.7",
     "promise": "^8.0.1",
-    "rollbar": "^2.2.7"
+    "rollbar": "^2.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
