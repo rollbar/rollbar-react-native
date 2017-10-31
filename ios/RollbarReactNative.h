@@ -3,14 +3,14 @@
 #else
 #import <React/RCTBridgeModule.h>
 #endif
+#import <Rollbar/Rollbar.h>
 
 @interface RollbarReactNative : NSObject <RCTBridgeModule>
 
-+ (void)start;
-
-- (void)start:(NSDictionary *)options; 
-
-- (void)setUser:(NSDictionary *)userInfo;
-- (void)clearUser;
++ (void)initWithAccessToken:(NSString *)accessToken;
++ (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration *)config;
+- (void)init:(NSDictionary *)options;
+- (void)setPerson:(NSDictionary *)personInfo;
+- (void)clearPerson;
 
 @end
