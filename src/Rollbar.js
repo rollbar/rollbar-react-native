@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 
 import Rollbar from 'rollbar/src/react-native/rollbar';
 
@@ -11,11 +11,12 @@ export class Client {
     } else {
       this.config = new Configuration(config);
     }
+    this.config.setPlatform(Platform.OS);
 
     this.rollbar = new Rollbar(this.config.toJSON());
 
     if (NativeClient) {
-      NativeClient.start(this.config.toJSON());
+      NativeClient.init(this.config.toJSON());
       this.captureUncaughtExceptions();
       if (this.config.captureUnhandledRejections) {
         this.captureUnhandledRejections();
@@ -84,12 +85,14 @@ export class Client {
     return this.rollbar.critical(obj, extra, callback);
   }
 
-  setUser = (id, name, email) => {
-    NativeClient.setUser({id, name, email});
+  setPerson = (id, name, email) => {
+    this.rollbar.setPerson({id, name, email});
+    NativeClient.setPerson({id, name, email});
   }
 
-  clearUser = () => {
-    NativeClient.clearUser();
+  clearPerson = () => {
+    this.rollbar.clearPerson();
+    NativeClient.clearPerson();
   }
 }
 
@@ -100,7 +103,7 @@ export class Configuration {
     this.version = pkgData['version'];
     this.accessToken = accessToken;
     this.logLevel = options.logLevel || 'debug';
-    this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/';
+    this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item';
     this.appVersion = options.appVersion || undefined;
     this.codeBundleId = options.codeBundleId || undefined;
     this.releaseStage = options.releaseStage || undefined;
@@ -115,10 +118,21 @@ export class Configuration {
       this.enabledReleaseStages.includes(this.releaseStage);
   }
 
+  setPlatform = (platform) => {
+    if (this.platform === undefined) {
+      if (platform === 'ios' || platform === 'android') {
+        this.platform = platform;
+      } else {
+        this.platform = 'client';
+      }
+    }
+  }
+
   toJSON = () => {
     return {
       accessToken: this.accessToken,
       endpoint: this.endpoint,
+      platform: this.platform,
       payload: {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
