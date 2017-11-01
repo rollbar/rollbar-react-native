@@ -3,6 +3,7 @@ package com.rollbar;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
