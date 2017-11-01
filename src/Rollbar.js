@@ -103,7 +103,7 @@ export class Configuration {
     this.version = pkgData['version'];
     this.accessToken = accessToken;
     this.logLevel = options.logLevel || 'debug';
-    this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item';
+    this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item/';
     this.appVersion = options.appVersion || undefined;
     this.codeBundleId = options.codeBundleId || undefined;
     this.releaseStage = options.releaseStage || undefined;
