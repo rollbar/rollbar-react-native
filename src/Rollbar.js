@@ -103,6 +103,7 @@ export class Configuration {
     this.version = pkgData['version'];
     this.accessToken = accessToken;
     this.logLevel = options.logLevel || 'debug';
+    this.reportLevel = options.reportLevel || 'warning';
     this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item/';
     this.appVersion = options.appVersion || undefined;
     this.codeBundleId = options.codeBundleId || undefined;
@@ -133,6 +134,8 @@ export class Configuration {
       accessToken: this.accessToken,
       endpoint: this.endpoint,
       platform: this.platform,
+      logLevel: this.logLevel,
+      reportLevel: this.reportLevel,
       payload: {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
