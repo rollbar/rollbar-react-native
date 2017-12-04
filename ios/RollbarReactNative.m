@@ -17,7 +17,7 @@
 }
 
 + (void)logWithLevel:(NSString*)level message:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar logWithLevel:level message:message message:data];
+  [Rollbar logWithLevel:level message:message data:data];
 }
 
 + (void)logWithLevel:(NSString*)level data:(NSDictionary*)data {
