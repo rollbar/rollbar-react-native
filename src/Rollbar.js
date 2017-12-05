@@ -111,6 +111,7 @@ export class Configuration {
     this.enabledReleaseStages = options.enabledReleaseStages || undefined;
     this.captureUncaught = options.captureUncaught !== undefined ? options.captureUncaught : true;
     this.captureUnhandledRejections = options.captureUnhandledRejections !== undefined ? options.captureUnhandledRejections : !__DEV__;
+    this.payload = options.payload || {};
   }
 
   shouldSend = () => {
@@ -140,7 +141,8 @@ export class Configuration {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
         enabledReleaseStages: this.enabledReleaseStages,
-        appVersion: this.appVersion
+        appVersion: this.appVersion,
+        ...this.payload
       },
       notifier: {
         name: 'rollbar-react-native',
