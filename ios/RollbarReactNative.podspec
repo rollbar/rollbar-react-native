@@ -1,14 +1,22 @@
 Pod::Spec.new do |s|
   s.name         = "RollbarReactNative"
-  s.version      = "0.1.0"
+  s.version      = "0.1.2"
   s.summary      = "RollbarReactNative"
   s.description  = <<-DESC
-                  RollbarReactNative
+                  RollbarReactNative is a library for interacting with the Rollbar
+                  error monitoring system in React Native apps.
                    DESC
+  s.homepage     = "https://rollbar.com"
   s.license      = "MIT"
+  s.author       = { "Rollbar" => "support@rollbar.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/author/RollbarReactNative.git", :tag => "master" }
-  s.source_files  = "RollbarReactNative/**/*.{h,m}"
+  s.source       = { :git => "https://github.com/author/RollbarReactNative.git", :tag => "v0.1.2" }
+  s.source_files  = "RollbarReactNative.{h,m}",
+    "Frameworks/Rollbar.framework/Headers/*.h",
+    "Frameworks/CrashReporter.framework/Headers/*.h"
+  s.public_header_files = "RollbarReactNative.h",
+    "Frameworks/Rollbar.framework/Headers/*.h",
+    "Frameworks/CrashReporter.framework/Headers/*.h"
   s.requires_arc = true
 
   s.dependency "React"
