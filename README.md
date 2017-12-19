@@ -14,8 +14,17 @@ if you have any problems working with this library.
 
 `$ react-native link rollbar-react-native`
 
-If you are using Cocoapods, then you should only need to do a `pod install` to
-get the iOS dependencies added to your workspace.
+If you are using Cocoapods, then you need to add the following to your pod file:
+
+```
+pod 'React', path: '../node_modules/react-native'
+pod 'RollbarReactNative', path: '../node_modules/rollbar-react-native/ios'
+```
+
+and perform a `pod install`.
+
+You also need to ensure the static library is linked with your app in the generated workspace like
+all other Cocoapods dependencies.
 
 ### Without Cocoapods
 
