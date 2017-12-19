@@ -1,7 +1,7 @@
 # ALPHA RELEASE
 
 This library is currently under heavy development, however it should be usable
-and therefore please [file an issue][https://github.com/rollbar/rollbar-react-native/issues]
+and therefore please [file an issue](https://github.com/rollbar/rollbar-react-native/issues)
 if you have any problems working with this library.
 
 # rollbar-react-native
@@ -21,7 +21,13 @@ pod 'React', path: '../node_modules/react-native'
 pod 'RollbarReactNative', path: '../node_modules/rollbar-react-native/ios'
 ```
 
-and perform a `pod install`.
+and depending on your version of React Native, you will also need:
+
+```
+pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
+```
+
+Then perform a `pod install`.
 
 You also need to ensure the static library is linked with your app in the generated workspace like
 all other Cocoapods dependencies.
