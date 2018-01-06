@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9E17A2C11F699D5800262D87 /* RollbarReactNative.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = B3E7B5881CC2AC0600A0062D /* RollbarReactNative.h */; };
-		9EFF92F91F69EC5E0057DBB8 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EFF92F71F69EC5E0057DBB8 /* CrashReporter.framework */; };
-		9EFF92FA1F69EC5E0057DBB8 /* Rollbar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EFF92F81F69EC5E0057DBB8 /* Rollbar.framework */; };
 		B3E7B58A1CC2AC0600A0062D /* RollbarReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RollbarReactNative.m */; };
 /* End PBXBuildFile section */
 
@@ -29,8 +27,6 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRollbarReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRollbarReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9EFF92F71F69EC5E0057DBB8 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = Frameworks/CrashReporter.framework; sourceTree = "<group>"; };
-		9EFF92F81F69EC5E0057DBB8 /* Rollbar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Rollbar.framework; path = Frameworks/Rollbar.framework; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RollbarReactNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollbarReactNative.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RollbarReactNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollbarReactNative.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -40,8 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EFF92F91F69EC5E0057DBB8 /* CrashReporter.framework in Frameworks */,
-				9EFF92FA1F69EC5E0057DBB8 /* Rollbar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,17 +56,7 @@
 				B3E7B5881CC2AC0600A0062D /* RollbarReactNative.h */,
 				B3E7B5891CC2AC0600A0062D /* RollbarReactNative.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
-				9EFF92F61F69EC5D0057DBB8 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		9EFF92F61F69EC5D0057DBB8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9EFF92F71F69EC5E0057DBB8 /* CrashReporter.framework */,
-				9EFF92F81F69EC5E0057DBB8 /* Rollbar.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +217,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/**",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -260,7 +243,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/**",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

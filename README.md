@@ -8,11 +8,45 @@ if you have any problems working with this library.
 
 ## Getting started
 
-`$ npm install rollbar-react-native --save`
+Integrating this library with your React Native codebase requires the following steps:
 
-### Mostly automatic installation
 
-`$ react-native link rollbar-react-native`
+1. Install the package from NPM
+
+```
+$ npm install rollbar-react-native --save
+```
+
+or
+
+```
+$ yarn add rollbar-react-native
+```
+
+2. Link the native modules with the underlying project:
+
+```
+$ react-native link rollbar-react-native
+```
+
+3. For iOS, download the Rollbar iOS Framework
+   [here](https://github.com/rollbar/rollbar-ios/releases/download/v0.2.0/Rollbar.zip). Extract this
+   zip file somewhere. You will need it for the next couple steps.
+
+4. Open the underlying Xcode project for your app:
+
+```
+$ open ios/MyAwesomeApp.xcodeproj
+```
+
+5. Drag the frameworks from the extracted zip file to be part of the `RollbarReactNative` project:
+
+![Add frameworks to RollbarReactNative](iosFrameworks.png)
+
+### Cocoapods
+
+We currently do not recommend using Cocoapods for integrating with Rollbar. This is being worked on,
+but at the moment the following instructions may or may not work.
 
 If you are using Cocoapods, then you need to add the following to your pod file:
 
@@ -31,12 +65,6 @@ Then perform a `pod install`.
 
 You also need to ensure the static library is linked with your app in the generated workspace like
 all other Cocoapods dependencies.
-
-### Without Cocoapods
-
-You will need to open your xcodeproj in XCode and follow these instructions:
-https://github.com/rollbar/rollbar-ios#without-cocoapods to integrate the rollbar-ios
-Framework with your project.
 
 ## Configuration
 
