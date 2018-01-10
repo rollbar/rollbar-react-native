@@ -4,6 +4,10 @@
 
 @implementation RollbarReactNative
 
+static NSString *const NOTIFIER_NAME = @"rollbar-react-native";
+static NSString *const NOTIFIER_VERSION = @"0.2.0-alpha1";
+static NSString *const REACT_NATIVE = @"react-native";
+
 + (void)initWithAccessToken:(NSString *)accessToken {
   [RollbarReactNative initWithAccessToken:accessToken configuration:nil];
 }
@@ -99,6 +103,18 @@ NSString* updateConfiguration(RollbarConfiguration *config, NSDictionary *option
   if (options[@"logLevel"]) {
     config.crashLevel = [RCTConvert NSString:options[@"endpoint"]];
   }
+  if (options[@"notifier"]) {
+    NSDictionary *notifierConfig = [RCTConvert NSDictionary:options[@"notifier"]];
+    NSString *name = notifierConfig[@"name"] ?: NOTIFIER_NAME;
+    NSString *version = notifierConfig[@"version"] ?: NOTIFIER_VERSION;
+    [config setNotifierName:name version:version];
+  }
+  NSString *framework = REACT_NATIVE;
+  if (options[@"framework"]) {
+    framework = [RCTConvert NSString:options[@"framework"]];
+  }
+  [config setCodeFramework:framework];
+
   return accessToken;
 }
 
