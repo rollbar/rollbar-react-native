@@ -4,6 +4,10 @@
 
 @implementation RollbarReactNative
 
+static NSString *const NOTIFIER_NAME = @"rollbar-react-native";
+static NSString *const NOTIFIER_VERSION = @"0.2.0-alpha1";
+static NSString *const REACT_NATIVE = @"react-native";
+
 + (void)initWithAccessToken:(NSString *)accessToken {
   [RollbarReactNative initWithAccessToken:accessToken configuration:nil];
 }
@@ -84,6 +88,104 @@
   [Rollbar criticalWithData:data];
 }
 
+// New interface
+
++ (void)log:(RollbarLevel)level message:(NSString*)message {
+  [Rollbar log:level message:message];
+}
+
++ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception {
+  [Rollbar log:level message:message exception:exception];
+}
+
++ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
+  [Rollbar log:level message:message exception:exception data:data];
+}
+
++ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
+  [Rollbar log:level message:message exception:exception data:data context:context];
+}
+
++ (void)debug:(NSString*)message {
+  [Rollbar debug:message];
+}
+
++ (void)debug:(NSString*)message exception:(NSException*)exception {
+  [Rollbar debug:message exception:exception];
+}
+
++ (void)debug:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
+  [Rollbar debug:message exception:exception data:data];
+}
+
++ (void)debug:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
+  [Rollbar debug:message exception:exception data:data context:context];
+}
+
++ (void)info:(NSString*)message {
+  [Rollbar info:message];
+}
+
++ (void)info:(NSString*)message exception:(NSException*)exception {
+  [Rollbar info:message exception:exception];
+}
+
++ (void)info:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
+  [Rollbar info:message exception:exception data:data];
+}
+
++ (void)info:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
+  [Rollbar info:message exception:exception data:data context:context];
+}
+
++ (void)warning:(NSString*)message {
+  [Rollbar warning:message];
+}
+
++ (void)warning:(NSString*)message exception:(NSException*)exception {
+  [Rollbar warning:message exception:exception];
+}
+
++ (void)warning:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
+  [Rollbar warning:message exception:exception data:data];
+}
+
++ (void)warning:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
+  [Rollbar warning:message exception:exception data:data context:context];
+}
+
++ (void)error:(NSString*)message {
+  [Rollbar error:message];
+}
+
++ (void)error:(NSString*)message exception:(NSException*)exception {
+  [Rollbar error:message exception:exception];
+}
+
++ (void)error:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
+  [Rollbar error:message exception:exception data:data];
+}
+
++ (void)error:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
+  [Rollbar error:message exception:exception data:data context:context];
+}
+
++ (void)critical:(NSString*)message {
+  [Rollbar critical:message];
+}
+
++ (void)critical:(NSString*)message exception:(NSException*)exception {
+  [Rollbar critical:message exception:exception];
+}
+
++ (void)critical:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
+  [Rollbar critical:message exception:exception data:data];
+}
+
++ (void)critical:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
+  [Rollbar critical:message exception:exception data:data context:context];
+}
+
 NSString* updateConfiguration(RollbarConfiguration *config, NSDictionary *options) {
   NSString *accessToken = nil;
   if (options[@"accessToken"]) {
@@ -99,6 +201,18 @@ NSString* updateConfiguration(RollbarConfiguration *config, NSDictionary *option
   if (options[@"logLevel"]) {
     config.crashLevel = [RCTConvert NSString:options[@"endpoint"]];
   }
+  if (options[@"notifier"]) {
+    NSDictionary *notifierConfig = [RCTConvert NSDictionary:options[@"notifier"]];
+    NSString *name = notifierConfig[@"name"] ?: NOTIFIER_NAME;
+    NSString *version = notifierConfig[@"version"] ?: NOTIFIER_VERSION;
+    [config setNotifierName:name version:version];
+  }
+  NSString *framework = REACT_NATIVE;
+  if (options[@"framework"]) {
+    framework = [RCTConvert NSString:options[@"framework"]];
+  }
+  [config setCodeFramework:framework];
+
   return accessToken;
 }
 

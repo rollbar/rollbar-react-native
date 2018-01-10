@@ -18,6 +18,7 @@ import com.facebook.react.bridge.ReactMethod;
 import android.content.Context;
 
 import com.rollbar.android.Rollbar;
+import com.rollbar.android.provider.NotifierProvider;
 import com.rollbar.api.payload.data.Level;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
@@ -25,7 +26,8 @@ import com.rollbar.notifier.config.ConfigProvider;
 
 public class RollbarReactNative extends ReactContextBaseJavaModule {
   private static final String REACT_NATIVE = "react-native";
-  private static final String NOTIFIER_VERSION = "0.1.3-alpha1";
+  private static final String NOTIFIER_NAME = "rollbar-react-native";
+  private static final String NOTIFIER_VERSION = "0.2.0-alpha1";
   private ReactContext reactContext;
 
   public static ReactPackage getPackage() {
@@ -43,6 +45,8 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
       public Config provide(ConfigBuilder builder) {
         return builder
           .framework(REACT_NATIVE)
+          .platform("android")
+          .notifier(new NotifierProvider(NOTIFIER_VERSION, NOTIFIER_NAME))
           .build();
       }
     });
@@ -486,17 +490,21 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void init(ReadableMap options) {
-    final String environment = options.hasKey("environment") ? options.getString("environment") : null;
-    if (environment != null) {
-      Rollbar.instance().configure(new ConfigProvider() {
-        @Override
-        public Config provide(ConfigBuilder builder) {
-          return builder
-            .environment(environment)
-            .build();
-        }
-      });
-    }
+    final String environment = options.hasKey("environment") ? options.getString("environment") : "production";
+    final String platform = options.hasKey("platform") ? options.getString("platform") : "android";
+    final String notifier_version = options.hasKey("notifier") ? options.getMap("notifier").getString("version") : NOTIFIER_VERSION;
+    final String notifier_name = options.hasKey("notifier") ? options.getMap("notifier").getString("name") : NOTIFIER_NAME;
+    Rollbar.instance().configure(new ConfigProvider() {
+      @Override
+      public Config provide(ConfigBuilder builder) {
+        return builder
+          .platform(platform)
+          .framework(REACT_NATIVE)
+          .environment(environment)
+          .notifier(new NotifierProvider(notifier_version, notifier_name))
+          .build();
+      }
+    });
   }
 
 	@ReactMethod
