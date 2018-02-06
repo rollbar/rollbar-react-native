@@ -113,15 +113,15 @@ rollbar.setPerson(id, name, email)
 rollbar.clearPerson()
 ```
 
-#### Source maps
+#### Source Maps
 
-Mapping production React Native javascript code to your source files is slightly more
-complicated than traditional javascript environments. This is due to the fact that iOS and Android
-generate different javascript bundles and hence different stack traces which need separate
+Mapping production React Native JavaScript code to your source files is slightly more
+complicated than traditional JavaScript environments. This is due to the fact that iOS and Android
+generate different JavaScript bundles, and therefore different stack traces, which need separate
 source maps.
 
-We can enable source maps to correctly identify the environment by using the `code_version` to signal
-which source map to use.
+You can enable source maps to correctly identify the environment by using the `code_version` to signal
+which source map to use. Please note that `code_version` must be nested under the `client` and `javascript` keys in order to work for source mapping.
 
 ```js
 new Configuration('POST_CLIENT_ITEM_ACCESS_TOKEN', {
@@ -137,8 +137,7 @@ new Configuration('POST_CLIENT_ITEM_ACCESS_TOKEN', {
 });
 ```
 
-Then specify the version when you upload the sourcemap via whatever mechanism you currently use. For
-example, via curl:
+Be sure to specify the code version when you upload the sourcemap. For example, via curl:
 
 ```
 curl https://api.rollbar.com/api/1/sourcemap \
@@ -149,21 +148,25 @@ curl https://api.rollbar.com/api/1/sourcemap \
   -F index.ios.js=@index.ios.js
 ```
 
-Source maps work based on file names for mapping minified symbols to symbols contained in your
-original source code. Due to the nature of the javascript environment that your code runs in on a
-mobile device using React Native, those file names are a bit strange. We automatically rewrite these
+Source maps use file names for mapping minified symbols to symbols contained in your
+original source code. Due to the nature of the JavaScript environment that your code runs in on a
+mobile device using React Native, these file names are a bit strange. Rollbar automatically rewrites these
 file names to be `http://reactnativehost/<regular file path>`. This allows you to use the
 `minified_url` with the fake protocol and host of `http://reactnativehost` to specify your minified
-javascript code.
+JavaScript code.
 
-Furthermore, generating stack traces for React Native seems to be an under documented part of the
-pipeline. Below are the commands one can run for generating conforming source maps for iOS and
-Android, respectively.
+Generating stack traces for React Native is an under-documented part of the
+pipeline. Below are the commands you can use to generate conforming source maps for iOS and
+Android.
+
+iOS:
 
 ```
 react-native bundle --platform ios --entry-file index.ios.js --dev false --bundle-output
 ios/main.jsbundle --assets-dest ios --sourcemap-output sourcemap.ios.js --sourcemap-sources-root ./
 ```
+
+Android:
 
 ```
 react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output
