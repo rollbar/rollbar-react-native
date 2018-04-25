@@ -1,17 +1,11 @@
 package com.rollbar;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.uimanager.ViewManager;
-import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
@@ -27,7 +21,7 @@ import com.rollbar.notifier.config.ConfigProvider;
 public class RollbarReactNative extends ReactContextBaseJavaModule {
   private static final String REACT_NATIVE = "react-native";
   private static final String NOTIFIER_NAME = "rollbar-react-native";
-  private static final String NOTIFIER_VERSION = "0.2.0-alpha3";
+  private static final String NOTIFIER_VERSION = "0.2.0-alpha4";
   private ReactContext reactContext;
 
   public static ReactPackage getPackage() {
@@ -494,6 +488,7 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
     final String platform = options.hasKey("platform") ? options.getString("platform") : "android";
     final String notifier_version = options.hasKey("notifier") ? options.getMap("notifier").getString("version") : NOTIFIER_VERSION;
     final String notifier_name = options.hasKey("notifier") ? options.getMap("notifier").getString("name") : NOTIFIER_NAME;
+    final boolean enabled = options.hasKey("enabled") ? options.getBoolean("enabled") : true;
     Rollbar.instance().configure(new ConfigProvider() {
       @Override
       public Config provide(ConfigBuilder builder) {
@@ -502,6 +497,7 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
           .framework(REACT_NATIVE)
           .environment(environment)
           .notifier(new NotifierProvider(notifier_version, notifier_name))
+          .handleUncaughtErrors(enabled)
           .build();
       }
     });
@@ -519,21 +515,4 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
   public void clearPerson() {
       Rollbar.instance().clearPersonData();
   }
-}
-
-class RollbarReactNativePackage implements ReactPackage {
-    @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new RollbarReactNative(reactContext));
-    }
-
-    // Deprecated from RN 0.47
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-      return Collections.emptyList();
-    }
-
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-      return Collections.emptyList();
-    }
 }

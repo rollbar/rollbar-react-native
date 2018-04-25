@@ -5,7 +5,7 @@
 @implementation RollbarReactNative
 
 static NSString *const NOTIFIER_NAME = @"rollbar-react-native";
-static NSString *const NOTIFIER_VERSION = @"0.2.0-alpha3";
+static NSString *const NOTIFIER_VERSION = @"0.2.0-alpha4";
 static NSString *const REACT_NATIVE = @"react-native";
 
 + (void)initWithAccessToken:(NSString *)accessToken {
@@ -13,7 +13,11 @@ static NSString *const REACT_NATIVE = @"react-native";
 }
 
 + (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration *)config {
-  [Rollbar initWithAccessToken:accessToken configuration:config];
+  [RollbarReactNative initWithAccessToken:accessToken configuration:config enableCrashReporter:YES];
+}
+
++ (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration*)configuration enableCrashReporter:(BOOL)enable {
+  [Rollbar initWithAccessToken:accessToken configuration:configuration enableCrashReporter:enable];
 }
 
 + (void)logWithLevel:(NSString*)level message:(NSString*)message {
@@ -226,7 +230,14 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
   }
   config = [RollbarConfiguration configuration];
   NSString *accessToken = updateConfiguration(config, options);
-  [Rollbar initWithAccessToken:accessToken configuration:config];
+
+  id enabledJSON = [options objectForKey:@"enabled"];
+  BOOL enabled = YES;
+  if (enabledJSON != nil) {
+    enabled = [RCTConvert BOOL:enabledJSON];
+  }
+
+  [Rollbar initWithAccessToken:accessToken configuration:config enableCrashReporter:enabled];
 }
 
 RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
