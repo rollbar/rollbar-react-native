@@ -112,6 +112,9 @@ export class Configuration {
     this.captureUncaught = options.captureUncaught !== undefined ? options.captureUncaught : true;
     this.captureUnhandledRejections = options.captureUnhandledRejections !== undefined ? options.captureUnhandledRejections : !__DEV__;
     this.payload = options.payload || {};
+    this.enabled = options.enabled === undefined ? true : options.enabled;
+    this.verbose = options.verbose || false;
+    this.transform = options.transform;
   }
 
   shouldSend = () => {
@@ -137,6 +140,9 @@ export class Configuration {
       platform: this.platform,
       logLevel: this.logLevel,
       reportLevel: this.reportLevel,
+      enabled: this.enabled,
+      verbose: this.verbose,
+      transform: this.transform,
       payload: {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
