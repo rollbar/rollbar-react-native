@@ -30,7 +30,7 @@ $ react-native link rollbar-react-native
 ```
 
 3. For iOS, download the Rollbar iOS Framework
-   [here](https://github.com/rollbar/rollbar-ios/releases/download/v1.0.0-alpha5/Rollbar.zip). Extract this
+   [here](https://github.com/rollbar/rollbar-ios/releases/download/v1.0.0-alpha8/Rollbar.zip). Extract this
    zip file somewhere. You will need it for the next couple steps.
 
 4. Open the underlying Xcode project for your app:
@@ -41,7 +41,7 @@ $ open ios/MyAwesomeApp.xcodeproj
 
 5. Drag the framework from the extracted zip file to be part of the `RollbarReactNative` project:
 
-![Add frameworks to RollbarReactNative](https://rollbar.com/assets/docs/images/iosFrameworks.png)
+![Add frameworks to RollbarReactNative](https://github.com/rollbar/rollbar-react-native/raw/master/iosFrameworks.png)
 
 We recommend checking the box that says "Copy items if needed". If you are managing your vendored
 dependencies in some other way where you do not want to check that box, then I presume you know what
@@ -173,6 +173,9 @@ react-native bundle --platform android --dev false --entry-file index.android.js
 android/index.android.bundle --assets-dest android/app/src/main/res/ --sourcemap-output
 sourcemap.android.js --sourcemap-sources-root ./
 ```
+
+If you find that the mapped source lines do not point to the correct lines in your source code, the
+issue is most likely due to [this React Native bug](https://github.com/facebook/react-native/issues/6946).
 
 ### iOS
 
