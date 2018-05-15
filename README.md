@@ -137,16 +137,7 @@ new Configuration('POST_CLIENT_ITEM_ACCESS_TOKEN', {
 });
 ```
 
-Be sure to specify the code version when you upload the sourcemap. For example, via curl:
-
-```
-curl https://api.rollbar.com/api/1/sourcemap \
-  -F access_token=ACCESS_TOKEN_HERE \
-  -F version=insert_code_version_here.ios \
-  -F minified_url=http://reactnativehost/main.jsbundle \
-  -F source_map=@sourcemap.ios.js \
-  -F index.ios.js=@index.ios.js
-```
+Be sure to specify the code version when you upload the sourcemap.
 
 Source maps use file names for mapping minified symbols to symbols contained in your
 original source code. Due to the nature of the JavaScript environment that your code runs in on a
@@ -159,23 +150,53 @@ Generating stack traces for React Native is an under-documented part of the
 pipeline. Below are the commands you can use to generate conforming source maps for iOS and
 Android.
 
-iOS:
-
-```
-react-native bundle --platform ios --entry-file index.ios.js --dev false --bundle-output
-ios/main.jsbundle --assets-dest ios --sourcemap-output sourcemap.ios.js --sourcemap-sources-root ./
-```
-
-Android:
-
-```
-react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output
-android/index.android.bundle --assets-dest android/app/src/main/res/ --sourcemap-output
-sourcemap.android.js --sourcemap-sources-root ./
-```
-
 If you find that the mapped source lines do not point to the correct lines in your source code, the
 issue is most likely due to [this React Native bug](https://github.com/facebook/react-native/issues/6946).
+
+### Complete example
+
+#### iOS:
+
+```
+react-native bundle \
+  --platform ios \
+  --dev false \
+  --entry-file index.js \
+  --bundle-output index.ios.bundle \
+  --sourcemap-output sourcemap.ios.js.map \
+  --sourcemap-sources-root ./
+  
+curl https://api.rollbar.com/api/1/sourcemap \
+  -F access_token=ACCESS_TOKEN_HERE \
+  -F version=insert_code_version_here.ios \
+  -F minified_url=http://reactnativehost/main.jsbundle \
+  -F source_map=@sourcemap.ios.js.map \
+  -F index.js=@index.js
+```
+
+#### Android:
+
+```
+react-native bundle \
+  --platform android \
+  --dev false \
+  --entry-file index.js \
+  --bundle-output index.android.bundle \
+  --sourcemap-output sourcemap.android.js.map \
+  --sourcemap-sources-root ./
+  
+curl https://api.rollbar.com/api/1/sourcemap \
+  -F access_token=ACCESS_TOKEN_HERE \
+  -F version=insert_code_version_here.android \
+  -F minified_url=http://reactnativehost/index.android.bundle \
+  -F source_map=@sourcemap.android.js.map \
+  -F index.js=@index.js  
+```
+
+**Note**
+If you use older version of React Native, provide `index.ios.js` and `index.android.js` instead of `index.js`
+
+
 
 ### iOS
 
