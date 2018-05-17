@@ -13,7 +13,8 @@ android {
 }
 
 dependencies {
-    compile 'com.rollbar:rollbar-java:1.0.0'
-    compile 'com.rollbar:rollbar-android:1.0.0@aar'
+    compile 'com.rollbar:rollbar-api:1.2.0'
+    compile 'com.rollbar:rollbar-java:1.2.0'
+    compile 'com.rollbar:rollbar-android:1.2.0@aar'
     compile 'com.facebook.react:react-native:+'
 }

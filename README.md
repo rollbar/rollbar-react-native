@@ -30,7 +30,7 @@ $ react-native link rollbar-react-native
 ```
 
 3. For iOS, download the Rollbar iOS Framework
-   [here](https://github.com/rollbar/rollbar-ios/releases/download/v1.0.0-alpha8/Rollbar.zip). Extract this
+   [here](https://github.com/rollbar/rollbar-ios/releases/download/v1.0.0-alpha10/Rollbar.zip). Extract this
    zip file somewhere. You will need it for the next couple steps.
 
 4. Open the underlying Xcode project for your app:
