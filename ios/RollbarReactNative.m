@@ -1,12 +1,13 @@
 #import "RollbarReactNative.h"
 #import <React/RCTConvert.h>
-#import <Rollbar/Rollbar.h>
 
 @implementation RollbarReactNative
 
 static NSString *const NOTIFIER_NAME = @"rollbar-react-native";
-static NSString *const NOTIFIER_VERSION = @"0.2.0-alpha5";
+static NSString *const NOTIFIER_VERSION = @"0.2.0-alpha6";
 static NSString *const REACT_NATIVE = @"react-native";
+
++ (void)initWithNothing {}
 
 + (void)initWithAccessToken:(NSString *)accessToken {
   [RollbarReactNative initWithAccessToken:accessToken configuration:nil];

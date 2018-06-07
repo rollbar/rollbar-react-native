@@ -3,10 +3,11 @@
 #else
 #import <React/RCTBridgeModule.h>
 #endif
-#import <Rollbar/Rollbar.h>
+#import "Rollbar.h"
 
 @interface RollbarReactNative : NSObject <RCTBridgeModule>
 
++ (void)initWithNothing;
 + (void)initWithAccessToken:(NSString *)accessToken;
 + (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration *)config;
 + (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration*)configuration enableCrashReporter:(BOOL)enable;
