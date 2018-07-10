@@ -1,9 +1,3 @@
-# ALPHA RELEASE
-
-This library is currently under heavy development, however it should be usable
-and therefore please [file an issue](https://github.com/rollbar/rollbar-react-native/issues)
-if you have any problems working with this library.
-
 # Rollbar-react-native
 
 [Rollbar](https://rollbar.com) is a real-time exception reporting service for React-Native and other languages. The Rollbar service will
