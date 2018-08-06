@@ -13,8 +13,7 @@ Rollbar-react-native is the SDK for React Native apps and includes support for A
 
 # Usage and Reference
 
-For complete Usage instructions and configuration reference, see our [React Native docs]
-(https://rollbar.readme.io/docs/react-native#section-configuration).
+For complete Usage instructions and configuration reference, see our [React Native docs](https://rollbar.readme.io/docs/react-native#section-configuration).
 
 # Release History & Changelog
 
