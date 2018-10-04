@@ -21,7 +21,7 @@ import com.rollbar.notifier.config.ConfigProvider;
 public class RollbarReactNative extends ReactContextBaseJavaModule {
   private static final String REACT_NATIVE = "react-native";
   private static final String NOTIFIER_NAME = "rollbar-react-native";
-  private static final String NOTIFIER_VERSION = "0.3.1";
+  private static final String NOTIFIER_VERSION = "0.3.2";
   private ReactContext reactContext;
 
   public static ReactPackage getPackage() {
