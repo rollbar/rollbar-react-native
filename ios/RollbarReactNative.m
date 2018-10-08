@@ -4,7 +4,7 @@
 @implementation RollbarReactNative
 
 static NSString *const NOTIFIER_NAME = @"rollbar-react-native";
-static NSString *const NOTIFIER_VERSION = @"0.3.2";
+static NSString *const NOTIFIER_VERSION = @"0.3.3";
 static NSString *const REACT_NATIVE = @"react-native";
 
 + (void)initWithAccessToken:(NSString *)accessToken {
