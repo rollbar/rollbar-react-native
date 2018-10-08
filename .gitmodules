@@ -1,3 +1,0 @@
-[submodule "ios/rollbar-ios"]
-	path = ios/rollbar-ios
-	url = git@github.com:rollbar/rollbar-ios.git
