@@ -102,6 +102,7 @@ export class Configuration {
     const pkgData = require('../package.json');
     this.version = pkgData['version'];
     this.accessToken = accessToken;
+    this.environment = options.environment;
     this.logLevel = options.logLevel || 'debug';
     this.reportLevel = options.reportLevel || 'debug';
     this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item/';
@@ -134,7 +135,7 @@ export class Configuration {
   }
 
   toJSON = () => {
-    return {
+    var result = {
       accessToken: this.accessToken,
       endpoint: this.endpoint,
       platform: this.platform,
@@ -155,5 +156,9 @@ export class Configuration {
         version: this.version
       }
     };
+    if (this.environment) {
+      result.environment = this.environment;
+    }
+    return result;
   }
 }
