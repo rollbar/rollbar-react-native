@@ -8,8 +8,7 @@ Rollbar-react-native is the SDK for React Native apps and includes support for A
 # Setup Instructions
 
 1. [Sign up for a Rollbar account](https://rollbar.com/signup)
-2. Follow the [Getting Started](https://rollbar.readme.io/docs/react-native#section-getting-started) instructions in our [React Native docs]
-(https://rollbar.readme.io/docs/react-native) to install rollbar-react-native and configure it for your platform.
+2. Follow the [Getting Started](https://rollbar.readme.io/docs/react-native#section-getting-started) instructions in our [React Native docs](https://rollbar.readme.io/docs/react-native) to install rollbar-react-native and configure it for your platform.
 
 # Usage and Reference
 
