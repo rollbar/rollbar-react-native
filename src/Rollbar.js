@@ -116,6 +116,7 @@ export class Configuration {
     this.enabled = options.enabled === undefined ? true : options.enabled;
     this.verbose = options.verbose || false;
     this.transform = options.transform;
+    this.rewriteFilenamePatterns = options.rewriteFilenamePatterns;
   }
 
   shouldSend = () => {
@@ -144,6 +145,7 @@ export class Configuration {
       enabled: this.enabled,
       verbose: this.verbose,
       transform: this.transform,
+      rewriteFilenamePatterns: this.rewriteFilenamePatterns,
       payload: {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
