@@ -202,7 +202,7 @@ NSString* updateConfiguration(RollbarConfiguration *config, NSDictionary *option
     config.endpoint = [RCTConvert NSString:options[@"endpoint"]];
   }
   if (options[@"logLevel"]) {
-    config.crashLevel = [RCTConvert NSString:options[@"endpoint"]];
+    config.crashLevel = [RCTConvert NSString:options[@"logLevel"]];
   }
   if (options[@"notifier"]) {
     NSDictionary *notifierConfig = [RCTConvert NSDictionary:options[@"notifier"]];
