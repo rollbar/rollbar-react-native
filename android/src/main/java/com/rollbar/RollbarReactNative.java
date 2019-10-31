@@ -2,6 +2,8 @@ package com.rollbar;
 
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -10,6 +12,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.rollbar.android.Rollbar;
 import com.rollbar.android.provider.NotifierProvider;
@@ -514,5 +517,23 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
   @ReactMethod
   public void clearPerson() {
       Rollbar.instance().clearPersonData();
+  }
+
+  // Defined as synchronous because the data must be returned in the
+  // javascript configuration constructor before Rollbar.js is initialized.
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public String deviceAttributes() {
+    JsonObject attributes = new JsonObject();
+
+    attributes.addProperty("os", "android");
+    attributes.addProperty("phone_model", android.os.Build.MODEL);
+    attributes.addProperty("android_version", android.os.Build.VERSION.RELEASE);
+    attributes.addProperty("board", android.os.Build.BOARD);
+    attributes.addProperty("brand", android.os.Build.BRAND);
+    attributes.addProperty("device", android.os.Build.DEVICE);
+    attributes.addProperty("manufacturer", android.os.Build.MANUFACTURER);
+    attributes.addProperty("product", android.os.Build.PRODUCT);
+
+    return attributes.toString();
   }
 }
