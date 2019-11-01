@@ -17,7 +17,7 @@
   "dependencies": {
     "buffer": "^4.9.1 || ^5.0.7",
     "promise": "^8.0.1",
-    "rollbar": "^2.13.0",
+    "rollbar": "^2.14.0",
     "url": "^0.11.0"
   },
   "devDependencies": {
