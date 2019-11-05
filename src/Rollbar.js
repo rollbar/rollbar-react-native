@@ -2,6 +2,8 @@ import { Platform, NativeModules } from 'react-native';
 
 import Rollbar from 'rollbar/src/react-native/rollbar';
 
+import { merge } from '../src/merge';
+
 const NativeClient = NativeModules.RollbarReactNative;
 
 export class Client {
@@ -106,13 +108,16 @@ export class Configuration {
     this.logLevel = options.logLevel || 'debug';
     this.reportLevel = options.reportLevel || 'debug';
     this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item/';
-    this.appVersion = options.appVersion || undefined;
+    this.appVersion = options.appVersion || 'foo';
     this.codeBundleId = options.codeBundleId || undefined;
     this.releaseStage = options.releaseStage || undefined;
     this.enabledReleaseStages = options.enabledReleaseStages || undefined;
     this.captureUncaught = options.captureUncaught !== undefined ? options.captureUncaught : true;
     this.captureUnhandledRejections = options.captureUnhandledRejections !== undefined ? options.captureUnhandledRejections : !__DEV__;
-    this.payload = options.payload || {};
+
+    // Ensure captureDeviceInfo is set before calling payloadOptions() below.
+    this.captureDeviceInfo = options.captureDeviceInfo === undefined ? true : options.captureDeviceInfo;
+    this.payload = merge(options.payload, this.payloadOptions());
     this.enabled = options.enabled === undefined ? true : options.enabled;
     this.verbose = options.verbose || false;
     this.transform = options.transform;
@@ -135,6 +140,22 @@ export class Configuration {
     }
   }
 
+  payloadOptions = () => {
+    if (!this.captureDeviceInfo) {
+      return {};
+    }
+
+    return {
+      client: {
+        os: this.deviceAttributes()
+      }
+    }
+  }
+
+  deviceAttributes = () => {
+    return JSON.parse(NativeClient.deviceAttributes());
+  }
+
   toJSON = () => {
     var result = {
       accessToken: this.accessToken,
@@ -144,6 +165,7 @@ export class Configuration {
       reportLevel: this.reportLevel,
       enabled: this.enabled,
       verbose: this.verbose,
+      captureDeviceInfo: this.captureDeviceInfo,
       transform: this.transform,
       rewriteFilenamePatterns: this.rewriteFilenamePatterns,
       payload: {

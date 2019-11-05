@@ -4,6 +4,7 @@
 #else
 #import "RCTConvert.h"
 #endif
+#include <sys/utsname.h>
 
 @implementation RollbarReactNative
 
@@ -252,6 +253,42 @@ RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
 
 RCT_EXPORT_METHOD(clearPerson) {
   [[Rollbar currentConfiguration] setPersonId:nil username:nil email:nil];
+}
+
+// Defined as synchronous because the data must be returned in the
+// javascript configuration constructor before Rollbar.js is initialized.
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(deviceAttributes)
+{
+  struct utsname systemInfo;
+  uname(&systemInfo);
+  NSString *deviceCode = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *version = [mainBundle objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+  NSString *shortVersion = [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+  NSString *bundleName = [mainBundle objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
+  NSString *bundleIdentifier = [mainBundle objectForInfoDictionaryKey:(NSString *)kCFBundleIdentifierKey];
+
+  NSDictionary *attributes = @{
+    @"os": @"ios",
+    @"os_version": [[UIDevice currentDevice] systemVersion],
+    @"system_name": [[UIDevice currentDevice] systemName],
+    @"device_name": [[UIDevice currentDevice] name],
+    @"device_code" : deviceCode,
+    @"code_version": version ? version : @"",
+    @"short_version": shortVersion ? shortVersion : @"",
+    @"bundle_identifier": bundleIdentifier ? bundleIdentifier : @"",
+    @"app_name": bundleName ? bundleName : @""
+  };
+
+  NSError *error;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:attributes
+                                                     options:0
+                                                       error:&error];
+
+  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+  return jsonString;
 }
 
 @end
