@@ -106,9 +106,9 @@ export class Configuration {
     this.accessToken = accessToken;
     this.environment = options.environment;
     this.logLevel = options.logLevel || 'debug';
-    this.reportLevel = options.reportLevel || 'debug';
-    this.endpoint = options.endpoint || 'https://api.rollbar.com/api/1/item/';
-    this.appVersion = options.appVersion || 'foo';
+    this.reportLevel = options.reportLevel || undefined;
+    this.endpoint = options.endpoint || undefined;
+    this.appVersion = options.appVersion || undefined;
     this.codeBundleId = options.codeBundleId || undefined;
     this.releaseStage = options.releaseStage || undefined;
     this.enabledReleaseStages = options.enabledReleaseStages || undefined;
@@ -122,6 +122,11 @@ export class Configuration {
     this.verbose = options.verbose || false;
     this.transform = options.transform;
     this.rewriteFilenamePatterns = options.rewriteFilenamePatterns;
+    this.scrubFields = options.scrubFields || undefined;
+    this.overwriteScrubFields = options.overwriteScrubFields || undefined;
+    this.onSendCallback = options.onSendCallback || undefined;
+    this.checkIgnore = options.checkIgnore || undefined;
+    this.ignoreDuplicateErrors = options.ignoreDuplicateErrors !== undefined ? options.ignoreDuplicateErrors : undefined;
   }
 
   shouldSend = () => {
@@ -168,6 +173,11 @@ export class Configuration {
       captureDeviceInfo: this.captureDeviceInfo,
       transform: this.transform,
       rewriteFilenamePatterns: this.rewriteFilenamePatterns,
+      scrubFields: this.scrubFields,
+      overwriteScrubFields: this.overwriteScrubFields,
+      onSendCallback: this.onSendCallback,
+      checkIgnore: this.checkIgnore,
+      ignoreDuplicateErrors: this.ignoreDuplicateErrors,
       payload: {
         codeBundleId: this.codeBundleId,
         releaseStage: this.releaseStage,
