@@ -22,7 +22,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-react-native": "^3.0.2",
-    "promise": "^7.1.1",
+    "promise": "^7.1.1"
   },
   "rnpm": {
     "android": {
