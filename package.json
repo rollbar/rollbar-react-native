@@ -12,11 +12,11 @@
     "prepublish": "mkdir -p lib && babel src/Rollbar.js --presets=react-native -s -o lib/Rollbar.js"
   },
   "peerDependencies": {
-    "react-native": ">=0.50"
+    "react-native": ">=0.50",
+    "promise": ">=7.1.1"
   },
   "dependencies": {
     "buffer": "^4.9.1 || ^5.0.7",
-    "promise": "^8.0.1",
     "rollbar": "^2.14.0",
     "url": "^0.11.0"
   },
