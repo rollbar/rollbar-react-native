@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'RollbarReactNative'
-  s.version      = '0.7.1'
+  s.version      = '0.7.2'
   s.summary      = 'RollbarReactNative'
   s.description  = <<-DESC
                   RollbarReactNative is a library for interacting with the Rollbar
