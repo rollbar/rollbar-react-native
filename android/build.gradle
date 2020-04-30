@@ -13,9 +13,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.rollbar:rollbar-api:1.4.0'
-    implementation 'com.rollbar:rollbar-java:1.4.0'
-    implementation 'com.rollbar:rollbar-android:1.4.0@aar'
+    implementation('com.rollbar:rollbar-android:1.7.1')
     implementation 'com.facebook.react:react-native:+'
     implementation 'com.google.code.gson:gson:+'
 }
