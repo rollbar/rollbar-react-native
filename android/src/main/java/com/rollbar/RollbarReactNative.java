@@ -1,6 +1,7 @@
 package com.rollbar;
 
 import java.util.Map;
+import java.util.MissingResourceException;
 
 import com.google.gson.JsonObject;
 
@@ -12,7 +13,12 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.PackageInfo;
+import android.content.pm.ApplicationInfo;
 import android.os.Build;
+import android.os.Bundle;
 
 import com.rollbar.android.Rollbar;
 import com.rollbar.android.provider.NotifierProvider;
@@ -25,6 +31,8 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
   private static final String REACT_NATIVE = "react-native";
   private static final String NOTIFIER_NAME = "rollbar-react-native";
   private static final String NOTIFIER_VERSION = "0.7.2";
+  private static final String MANIFEST_CODE_VERSION = "com.rollbar.android.CODE_VERSION";
+
   private ReactContext reactContext;
 
   public static ReactPackage getPackage() {
@@ -37,16 +45,42 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
   }
 
   public static void init(Context context, String accessToken, String environment) {
+    final String codeVersion = loadCodeVersionFromManifest(context);
+
     Rollbar.init(context, accessToken, environment, true, false, new ConfigProvider() {
       @Override
       public Config provide(ConfigBuilder builder) {
         return builder
           .framework(REACT_NATIVE)
           .platform("android")
+          .codeVersion(codeVersion) // OK to send null here if there's no code version.
           .notifier(new NotifierProvider(NOTIFIER_VERSION, NOTIFIER_NAME))
           .build();
       }
     });
+  }
+
+  private static String loadCodeVersionFromManifest(Context context) {
+    ApplicationInfo ai;
+
+    try {
+      ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+    } catch (NameNotFoundException e) {
+      return null;
+    }
+
+    Bundle data = ai.metaData;
+
+    // The bundle will be null if there are no metadata values.
+    if (data == null) {
+      return null;
+    }
+
+    try {
+      return data.getString(MANIFEST_CODE_VERSION);
+    } catch (MissingResourceException e) {
+      return null;
+    }
   }
 
   /**
