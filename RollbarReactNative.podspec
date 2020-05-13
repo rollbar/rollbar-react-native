@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'React'
-  s.dependency 'Rollbar', '~> 1.5.0'
+  s.dependency 'Rollbar', '~> 1.12.7'
 
   s.source_files  = 'ios/RollbarReactNative.{h,m}'
   s.public_header_files = 'ios/RollbarReactNative.h'
