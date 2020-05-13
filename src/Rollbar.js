@@ -116,7 +116,7 @@ export class Configuration {
     this.captureUnhandledRejections = options.captureUnhandledRejections !== undefined ? options.captureUnhandledRejections : !__DEV__;
 
     // Ensure captureDeviceInfo is set before calling payloadOptions() below.
-    this.captureDeviceInfo = options.captureDeviceInfo === undefined ? true : options.captureDeviceInfo;
+    this.captureDeviceInfo = options.captureDeviceInfo === undefined ? false : options.captureDeviceInfo;
     this.payload = merge(options.payload, this.payloadOptions());
     this.enabled = options.enabled === undefined ? true : options.enabled;
     this.verbose = options.verbose || false;
