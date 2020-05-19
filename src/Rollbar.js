@@ -110,7 +110,7 @@ export class Configuration {
       if (platform === 'ios' || platform === 'android') {
         this.platform = platform;
       } else if (platform === 'web') {
-        this.platform = 'web';
+        this.platform = 'client';
       } else {
         this.platform = 'client';
       }
