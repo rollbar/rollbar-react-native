@@ -143,6 +143,8 @@ export class Configuration {
       enabled: this.enabled,
       verbose: this.verbose,
       captureDeviceInfo: this.captureDeviceInfo,
+      captureUncaught: this.captureUncaught,
+      captureUnhandledRejections: this.captureUnhandledRejections,
       transform: this.transform,
       rewriteFilenamePatterns: this.rewriteFilenamePatterns,
       scrubFields: this.scrubFields,
