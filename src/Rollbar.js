@@ -17,43 +17,13 @@ export class Client {
 
     this.rollbar = new Rollbar(this.config.toJSON());
 
-    if (NativeClient) {
-      NativeClient.init(this.config.toJSON());
-      this.captureUncaughtExceptions();
-      if (this.config.captureUnhandledRejections) {
-        this.captureUnhandledRejections();
+    if (Platform.OS !== 'web') { 
+      if (NativeClient) {
+        NativeClient.init(this.config.toJSON());
+      } else {
+        throw new Error('Rollbar: Native client not found. Did you run react-native link?');
       }
-    } else {
-      throw new Error('Rollbar: Native client not found. Did you run react-native link?');
     }
-  }
-
-  captureUncaughtExceptions = () => {
-		if (ErrorUtils) {
-      const previousHandler = ErrorUtils.getGlobalHandler();
-
-      ErrorUtils.setGlobalHandler((error, isFatal) => {
-        if (this.config.captureUncaught && this.config.shouldSend()) {
-          this.error(error, undefined, (queued) => {
-            if (previousHandler) {
-              previousHandler(error, isFatal);
-            }
-          });
-        } else if (previousHandler) {
-          previousHandler(error, isFatal);
-        }
-      });
-    }
-  }
-
-  captureUnhandledRejections = () => {
-		const tracking = require('promise/setimmediate/rejection-tracking');
-    const client = this;
-    tracking.enable({
-      allRejections: true,
-      onUnhandled: function(id, error) { client.error(error); },
-      onHandled: function() {}
-    });
   }
 
   log = (obj, extra, callback) => {
@@ -158,7 +128,7 @@ export class Configuration {
   }
 
   deviceAttributes = () => {
-    return JSON.parse(NativeClient.deviceAttributes());
+    return Platform.OS !== 'web' ? JSON.parse(NativeClient.deviceAttributes()) : {};
   }
 
   toJSON = () => {
@@ -171,6 +141,8 @@ export class Configuration {
       enabled: this.enabled,
       verbose: this.verbose,
       captureDeviceInfo: this.captureDeviceInfo,
+      captureUncaught: this.captureUncaught,
+      captureUnhandledRejections: this.captureUnhandledRejections,
       transform: this.transform,
       rewriteFilenamePatterns: this.rewriteFilenamePatterns,
       scrubFields: this.scrubFields,
