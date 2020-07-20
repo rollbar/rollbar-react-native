@@ -19,12 +19,11 @@ export class Client {
 
     if (NativeClient) {
       NativeClient.init(this.config.toJSON());
-      this.captureUncaughtExceptions();
-      if (this.config.captureUnhandledRejections) {
-        this.captureUnhandledRejections();
-      }
-    } else {
-      throw new Error('Rollbar: Native client not found. Did you run react-native link?');
+    }
+
+    this.captureUncaughtExceptions();
+    if (this.config.captureUnhandledRejections) {
+      this.captureUnhandledRejections();
     }
   }
 
@@ -89,12 +88,16 @@ export class Client {
 
   setPerson = (id, name, email) => {
     this.rollbar.setPerson({id, name, email});
-    NativeClient.setPerson({id, name, email});
+    if (NativeClient) {
+      NativeClient.setPerson({id, name, email});
+    }
   }
 
   clearPerson = () => {
     this.rollbar.clearPerson();
-    NativeClient.clearPerson();
+    if (NativeClient) {
+      NativeClient.clearPerson();
+    }
   }
 }
 
@@ -158,7 +161,11 @@ export class Configuration {
   }
 
   deviceAttributes = () => {
-    return JSON.parse(NativeClient.deviceAttributes());
+    if (NativeClient) {
+      return JSON.parse(NativeClient.deviceAttributes());
+    } else {
+      return {};
+    }
   }
 
   toJSON = () => {
