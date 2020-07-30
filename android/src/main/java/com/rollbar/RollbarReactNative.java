@@ -45,9 +45,13 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
   }
 
   public static void init(Context context, String accessToken, String environment) {
+    init(context, accessToken, environment, true);
+  }
+
+  public static void init(Context context, String accessToken, String environment, boolean registerExceptionHandler) {
     final String codeVersion = loadCodeVersionFromManifest(context);
 
-    Rollbar.init(context, accessToken, environment, true, false, new ConfigProvider() {
+    Rollbar.init(context, accessToken, environment, registerExceptionHandler, false, new ConfigProvider() {
       @Override
       public Config provide(ConfigBuilder builder) {
         return builder
