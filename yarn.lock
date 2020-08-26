@@ -694,10 +694,6 @@ braces@^2.3.1, braces@^2.3.2:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-buffer-from@~1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
-
 "buffer@^4.9.1 || ^5.0.7":
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.4.3.tgz#3fbc9c69eb713d323e3fc1a895eee0710c072115"
@@ -801,7 +797,7 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
+debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
@@ -1463,14 +1459,13 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
-rollbar@^2.16.1:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.18.0.tgz#97c517f5de818fdf66094f6a0ee6b29af25defc5"
+rollbar@^2.19.3:
+  version "2.19.3"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.19.3.tgz#9779c4567cb5e49bb18e9bb60b70810ba4aad755"
+  integrity sha512-SBGEN999+wAlE2Q25pfzqUCqNiplpRPbgv/oYn4eW3Kk4CJox/mMGaSB9BWidX2Vep5TGpxxuyWCHrqklS+s/w==
   dependencies:
     async "~1.2.1"
-    buffer-from "~1.1.1"
     console-polyfill "0.3.0"
-    debug "2.6.9"
     error-stack-parser "^2.0.4"
     json-stringify-safe "~5.0.0"
     lru-cache "~2.2.1"
