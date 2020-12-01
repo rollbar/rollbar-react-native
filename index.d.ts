@@ -40,6 +40,7 @@ export interface ConfigurationOptions {
   enabledReleaseStages?: string[];
   captureUncaught?: boolean;
   captureUnhandledRejections?: boolean;
+  captureDeviceInfo?: boolean;
   payload?: object;
   enabled?: boolean;
   verbose?: boolean;
