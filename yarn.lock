@@ -1459,10 +1459,10 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
-rollbar@^2.19.3:
-  version "2.19.3"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.19.3.tgz#9779c4567cb5e49bb18e9bb60b70810ba4aad755"
-  integrity sha512-SBGEN999+wAlE2Q25pfzqUCqNiplpRPbgv/oYn4eW3Kk4CJox/mMGaSB9BWidX2Vep5TGpxxuyWCHrqklS+s/w==
+rollbar@^2.21.1:
+  version "2.21.1"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.21.1.tgz#482c3b2ea0d65e774352da3e89eeaf4679ee9970"
+  integrity sha512-HROzV6rV0BYxzZpOlDKUSV/RdyHMuCm9gknIGk+FYPVAUwbXCrwZeiYwuc5n3MLnX+IPBVzatzJsiNOJzngNGg==
   dependencies:
     async "~1.2.1"
     console-polyfill "0.3.0"
