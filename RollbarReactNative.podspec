@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => 'https://github.com/author/RollbarReactNative.git', :tag => 'v0.8.0' }
   s.requires_arc = true
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'Rollbar', '~> 1.12.8'
 
   s.source_files  = 'ios/RollbarReactNative.{h,m}'
