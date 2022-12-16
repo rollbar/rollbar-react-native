@@ -15,7 +15,7 @@ alert you of problems with your code and help you understand them in a ways neve
 
 Rollbar-react-native is the SDK for React Native apps and includes support for Android, iOS, and Javascript.
 
-## Key benefits of using Rollbar.js are:
+## Key benefits of using Rollbar React Native are:
 - **Source maps:** Uploading source maps from Javascript, Android and IOS bundles is made easy through Rollbar. <a href="https://docs.rollbar.com/docs/react-native#source-maps">Learn more about react native sourcemaps</a>.
 - **Automatic error grouping:** Rollbar aggregates Occurrences caused by the same error into Items that represent application issues. <a href="https://docs.rollbar.com/docs/grouping-occurrences">Learn more about reducing log noise</a>.
 - **Advanced search:** Filter items by many different properties. <a href="https://docs.rollbar.com/docs/search-items">Learn more about search</a>.
