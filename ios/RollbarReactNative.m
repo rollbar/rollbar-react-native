@@ -245,9 +245,12 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
 }
 
 RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
-  NSString *identifier = personInfo[@"id"] ? [RCTConvert NSString:personInfo[@"id"]] : nil;
-  NSString *name = personInfo[@"name"] ? [RCTConvert NSString:personInfo[@"name"]] : nil;
-  NSString *email = personInfo[@"email"] ? [RCTConvert NSString:personInfo[@"email"]] : nil;
+  NSString *identifier = personInfo[@"id"] && ![personInfo[@"id"] isEqual:[NSNull null]]
+    ? [RCTConvert NSString:personInfo[@"id"]] : nil;
+  NSString *name = personInfo[@"name"] && ![personInfo[@"name"] isEqual:[NSNull null]]
+    ? [RCTConvert NSString:personInfo[@"name"]] : nil;
+  NSString *email = personInfo[@"email"] && ![personInfo[@"email"] isEqual:[NSNull null]]
+    ? [RCTConvert NSString:personInfo[@"email"]] : nil;
   [[Rollbar currentConfiguration] setPersonId:identifier username:name email:email];
 }
 
