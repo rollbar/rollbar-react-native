@@ -1,6 +1,7 @@
 import { Platform, NativeModules } from 'react-native';
 
-import Rollbar from 'rollbar/src/react-native/rollbar';
+import ReactNativeRollbar from 'rollbar/src/react-native/rollbar';
+import BrowserRollbar from 'rollbar';
 
 import { merge } from '../src/merge';
 
@@ -8,27 +9,29 @@ const NativeClient = NativeModules.RollbarReactNative;
 
 export class Client {
   constructor(config) {
-    if (config instanceof Configuration) {
-      this.config = config;
-    } else {
+    this.isNative = Platform.OS !== 'web';
+
+    if (this.isNative) {
       this.config = new Configuration(config);
-    }
-    this.config.setPlatform(Platform.OS);
+      this.config.setPlatform(Platform.OS);
 
-    this.rollbar = new Rollbar(this.config.toJSON());
+      if (NativeClient) {
+        NativeClient.init(this.config.toJSON());
+      }
 
-    if (NativeClient) {
-      NativeClient.init(this.config.toJSON());
-    }
+      this.rollbar = new ReactNativeRollbar(this.config.toJSON());
 
-    this.captureUncaughtExceptions();
-    if (this.config.captureUnhandledRejections) {
-      this.captureUnhandledRejections();
+      this.captureUncaughtExceptions();
+      if (this.config.captureUnhandledRejections) {
+        this.captureUnhandledRejections();
+      }
+    } else {
+      this.rollbar = new BrowserRollbar(config);
     }
   }
 
   captureUncaughtExceptions = () => {
-		if (ErrorUtils) {
+    if (this.isNative && typeof ErrorUtils !== undefined) {
       const previousHandler = ErrorUtils.getGlobalHandler();
 
       ErrorUtils.setGlobalHandler((error, isFatal) => {
@@ -46,7 +49,7 @@ export class Client {
   }
 
   captureUnhandledRejections = () => {
-		const tracking = require('promise/setimmediate/rejection-tracking');
+    const tracking = require('promise/setimmediate/rejection-tracking');
     const client = this;
     tracking.enable({
       allRejections: true,
@@ -56,7 +59,7 @@ export class Client {
   }
 
   log = (obj, extra, callback) => {
-		if (!this.config.shouldSend()) {
+    if (this.isNative && !this.config.shouldSend()) {
       if (callback) {
         callback(false);
       }
@@ -87,49 +90,34 @@ export class Client {
   }
 
   setPerson = (id, name, email) => {
-    this.rollbar.setPerson({id, name, email});
+    this.rollbar.configure({}, {person: {id, name, email}});
     if (NativeClient) {
       NativeClient.setPerson({id, name, email});
     }
   }
 
   clearPerson = () => {
-    this.rollbar.clearPerson();
+    this.rollbar.configure({}, {person: {}});
     if (NativeClient) {
       NativeClient.clearPerson();
     }
   }
 }
 
-export class Configuration {
-  constructor(accessToken, options) {
-    options = options || {};
+class Configuration {
+  constructor(options) {
     const pkgData = require('../package.json');
-    this.version = pkgData['version'];
-    this.accessToken = accessToken;
-    this.environment = options.environment;
-    this.logLevel = options.logLevel || 'debug';
-    this.reportLevel = options.reportLevel || undefined;
-    this.endpoint = options.endpoint || undefined;
-    this.appVersion = options.appVersion || undefined;
-    this.codeBundleId = options.codeBundleId || undefined;
-    this.releaseStage = options.releaseStage || undefined;
-    this.enabledReleaseStages = options.enabledReleaseStages || undefined;
-    this.captureUncaught = options.captureUncaught !== undefined ? options.captureUncaught : true;
-    this.captureUnhandledRejections = options.captureUnhandledRejections !== undefined ? options.captureUnhandledRejections : !__DEV__;
 
     // Ensure captureDeviceInfo is set before calling payloadOptions() below.
     this.captureDeviceInfo = options.captureDeviceInfo === undefined ? false : options.captureDeviceInfo;
-    this.payload = merge(options.payload, this.payloadOptions());
-    this.enabled = options.enabled === undefined ? true : options.enabled;
-    this.verbose = options.verbose || false;
-    this.transform = options.transform;
-    this.rewriteFilenamePatterns = options.rewriteFilenamePatterns;
-    this.scrubFields = options.scrubFields || undefined;
-    this.overwriteScrubFields = options.overwriteScrubFields || undefined;
-    this.onSendCallback = options.onSendCallback || undefined;
-    this.checkIgnore = options.checkIgnore || undefined;
-    this.ignoreDuplicateErrors = options.ignoreDuplicateErrors !== undefined ? options.ignoreDuplicateErrors : undefined;
+
+    this.options = merge(options || {}, {
+      payload: merge(options.payload, this.payloadOptions()),
+      notifier: {
+        name: 'rollbar-react-native',
+        version: pkgData['version']
+      }
+    });
   }
 
   shouldSend = () => {
@@ -140,11 +128,7 @@ export class Configuration {
 
   setPlatform = (platform) => {
     if (this.platform === undefined) {
-      if (platform === 'ios' || platform === 'android') {
-        this.platform = platform;
-      } else {
-        this.platform = 'client';
-      }
+      this.platform = platform;
     }
   }
 
@@ -169,37 +153,8 @@ export class Configuration {
   }
 
   toJSON = () => {
-    var result = {
-      accessToken: this.accessToken,
-      endpoint: this.endpoint,
-      platform: this.platform,
-      logLevel: this.logLevel,
-      reportLevel: this.reportLevel,
-      enabled: this.enabled,
-      verbose: this.verbose,
-      captureDeviceInfo: this.captureDeviceInfo,
-      transform: this.transform,
-      rewriteFilenamePatterns: this.rewriteFilenamePatterns,
-      scrubFields: this.scrubFields,
-      overwriteScrubFields: this.overwriteScrubFields,
-      onSendCallback: this.onSendCallback,
-      checkIgnore: this.checkIgnore,
-      ignoreDuplicateErrors: this.ignoreDuplicateErrors,
-      payload: {
-        codeBundleId: this.codeBundleId,
-        releaseStage: this.releaseStage,
-        enabledReleaseStages: this.enabledReleaseStages,
-        appVersion: this.appVersion,
-        ...this.payload
-      },
-      notifier: {
-        name: 'rollbar-react-native',
-        version: this.version
-      }
-    };
-    if (this.environment) {
-      result.environment = this.environment;
-    }
-    return result;
+    return merge(this.options, {
+      platform: this.platform
+    });
   }
 }
