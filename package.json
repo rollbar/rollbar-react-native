@@ -9,7 +9,7 @@
     "react-native"
   ],
   "scripts": {
-    "prepublish": "mkdir -p lib && babel src/Rollbar.js --presets=react-native -s -o lib/Rollbar.js"
+    "prepublish": "mkdir -p lib && babel src/Client.js --presets=react-native -s -o lib/Client.js"
   },
   "peerDependencies": {
     "react-native": ">=0.50",

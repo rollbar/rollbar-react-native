@@ -3,7 +3,7 @@ import { Platform, NativeModules } from 'react-native';
 import ReactNativeRollbar from 'rollbar/src/react-native/rollbar';
 import BrowserRollbar from 'rollbar';
 
-import { merge } from '../src/merge';
+import { merge } from './merge';
 
 const NativeClient = NativeModules.RollbarReactNative;
 
