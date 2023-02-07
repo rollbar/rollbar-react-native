@@ -1,8 +1,5 @@
 import { Platform, NativeModules } from 'react-native';
-
-import ReactNativeRollbar from 'rollbar/src/react-native/rollbar';
-import BrowserRollbar from 'rollbar';
-
+import Rollbar from './Rollbar';
 import { merge } from './merge';
 
 const NativeClient = NativeModules.RollbarReactNative;
@@ -19,14 +16,14 @@ export class Client {
         NativeClient.init(this.config.toJSON());
       }
 
-      this.rollbar = new ReactNativeRollbar(this.config.toJSON());
+      this.rollbar = new Rollbar(this.config.toJSON());
 
       this.captureUncaughtExceptions();
       if (this.config.captureUnhandledRejections) {
         this.captureUnhandledRejections();
       }
     } else {
-      this.rollbar = new BrowserRollbar(config);
+      this.rollbar = new Rollbar(config);
     }
   }
 

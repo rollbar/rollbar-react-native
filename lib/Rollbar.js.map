@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/Rollbar.js"],"names":["Rollbar"],"mappings":"gFAAA,wD,gGAEeA,gB","sourcesContent":["import Rollbar from 'rollbar';\n\nexport default Rollbar;\n"],"file":"Rollbar.js"}
