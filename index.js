@@ -1,2 +1,2 @@
 'use strict'
-module.exports = require('./lib/Rollbar');
+module.exports = require('./lib/Client');
