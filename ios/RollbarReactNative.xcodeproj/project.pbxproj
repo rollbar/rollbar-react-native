@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		9E17A2C11F699D5800262D87 /* RollbarReactNative.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = B3E7B5881CC2AC0600A0062D /* RollbarReactNative.h */; };
 		9E7303A120C9E58900D6900B /* libRollbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0FADE220C9DE9A002298F4 /* libRollbar.a */; };
-		B3E7B58A1CC2AC0600A0062D /* RollbarReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RollbarReactNative.m */; };
+		B3E7B58A1CC2AC0600A0062D /* RollbarReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RollbarReactNative.m */; settings = {COMPILER_FLAGS = "-fmodules -fcxx-modules"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +144,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -288,6 +289,7 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -305,6 +307,11 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 				);
+				"OTHER_CFLAGS[arch=*]" = (
+					"-fmodules",
+					"-fcxx-modules",
+				);
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RollbarReactNative;
 				SKIP_INSTALL = YES;
@@ -314,6 +321,7 @@
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -331,6 +339,11 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 				);
+				"OTHER_CFLAGS[arch=*]" = (
+					"-fmodules",
+					"-fcxx-modules",
+				);
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RollbarReactNative;
 				SKIP_INSTALL = YES;
