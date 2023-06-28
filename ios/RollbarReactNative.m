@@ -6,208 +6,356 @@
 #endif
 #include <sys/utsname.h>
 
+#if __has_include(<RollbarNotifier/Rollbar.h>)
+#import <RollbarNotifier/Rollbar.h>
+#else
+#import "Rollbar.h"
+#endif
+
 @implementation RollbarReactNative
 
 static NSString *const NOTIFIER_NAME = @"rollbar-react-native";
 static NSString *const NOTIFIER_VERSION = @"1.0.0-rc.0";
 static NSString *const REACT_NATIVE = @"react-native";
 
-+ (void)initWithAccessToken:(NSString *)accessToken {
-  [RollbarReactNative initWithAccessToken:accessToken configuration:nil];
++ (void)initWithConfiguration:(NSDictionary*)options {
+  RollbarMutableConfig *config = ((RollbarMutableConfig *)[Rollbar configuration]);
+  if (config) {
+    updateConfiguration(config, options);
+    return;
+  }
+  config = [RollbarConfig mutableConfigWithAccessToken:[RCTConvert NSString:options[@"accessToken"]]];
+  updateConfiguration(config, options);
+
+  [Rollbar initWithConfiguration:config];
 }
 
-+ (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration *)config {
-  [RollbarReactNative initWithAccessToken:accessToken configuration:config enableCrashReporter:YES];
++ (void)log:(nonnull NSString*)level message:(NSString*)message {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel message:message];
 }
 
-+ (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration*)configuration enableCrashReporter:(BOOL)enable {
-  [Rollbar initWithAccessToken:accessToken configuration:configuration enableCrashReporter:enable];
++ (void)log:(nonnull NSString*)level exception:(NSException*)exception {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel exception:exception];
 }
 
-+ (void)logWithLevel:(NSString*)level message:(NSString*)message {
-  [Rollbar logWithLevel:level message:message];
++ (void)log:(nonnull NSString*)level error:(NSError*)error {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel error:error];
 }
 
-+ (void)logWithLevel:(NSString*)level message:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar logWithLevel:level message:message data:data];
++ (void)log:(nonnull NSString*)level
+    message:(NSString*)message
+       data:(nullable NSDictionary<NSString *, id> *)data {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel message:message data:data];
 }
 
-+ (void)logWithLevel:(NSString*)level data:(NSDictionary*)data {
-  [Rollbar logWithLevel:level data:data];
++ (void)log:(nonnull NSString*)level
+    exception:(NSException*)exception
+         data:(nullable NSDictionary<NSString *, id> *)data {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel exception:exception data:data];
 }
 
-+ (void)debugWithMessage:(NSString*)message {
-  [Rollbar debugWithMessage:message];
++ (void)log:(nonnull NSString*)level
+      error:(NSError*)error
+       data:(nullable NSDictionary<NSString *, id> *)data {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel error:error data:data];
 }
 
-+ (void)debugWithMessage:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar debugWithMessage:message data:data];
++ (void)log:(nonnull NSString*)level
+    message:(NSString*)message
+       data:(nullable NSDictionary<NSString *, id> *)data
+    context:(nullable NSString *)context {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel message:message data:data context:context];
 }
 
-+ (void)debugWithData:(NSDictionary*)data {
-  [Rollbar debugWithData:data];
++ (void)log:(nonnull NSString*)level
+    exception:(NSException*)exception
+         data:(nullable NSDictionary<NSString *, id> *)data
+      context:(nullable NSString *)context {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel exception:exception data:data context:context];
 }
 
-+ (void)infoWithMessage:(NSString*)message {
-  [Rollbar infoWithMessage:message];
++ (void)log:(nonnull NSString*)level
+      error:(NSError*)error
+       data:(nullable NSDictionary<NSString *, id> *)data
+    context:(nullable NSString *)context {
+  RollbarLevel rLevel = rollbarLevelFromString(level);
+  [Rollbar log:rLevel error:error data:data context:context];
 }
 
-+ (void)infoWithMessage:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar infoWithMessage:message data:data];
++ (void)debugMessage:(NSString*)message {
+  [Rollbar debugMessage:message];
 }
 
-+ (void)infoWithData:(NSDictionary*)data {
-  [Rollbar infoWithData:data];
++ (void)debugException:(NSException*)exception {
+  [Rollbar debugException:exception];
 }
 
-+ (void)warningWithMessage:(NSString*)message {
-  [Rollbar warningWithMessage:message];
++ (void)debugError:(NSError*)error {
+  [Rollbar debugError:error];
 }
 
-+ (void)warningWithMessage:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar warningWithMessage:message data:data];
++ (void)debugMessage:(NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar debugMessage:message data:data];
 }
 
-+ (void)warningWithData:(NSDictionary*)data {
-  [Rollbar warningWithData:data];
++ (void)debugException:(NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar debugException:exception data:data];
 }
 
-+ (void)errorWithMessage:(NSString*)message {
-  [Rollbar errorWithMessage:message];
++ (void)debugError:(NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar debugError:error data:data];
 }
 
-+ (void)errorWithMessage:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar errorWithMessage:message data:data];
++ (void)debugMessage:(NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data
+             context:(nullable NSString *)context {
+  [Rollbar debugMessage:message data:data context:context];
 }
 
-+ (void)errorWithData:(NSDictionary*)data {
-  [Rollbar errorWithData:data];
++ (void)debugException:(NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data
+               context:(nullable NSString *)context {
+  [Rollbar debugException:exception data:data context:context];
 }
 
-+ (void)criticalWithMessage:(NSString*)message {
-  [Rollbar criticalWithMessage:message];
++ (void)debugError:(NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data
+           context:(nullable NSString *)context {
+  [Rollbar debugError:error data:data context:context];
 }
 
-+ (void)criticalWithMessage:(NSString*)message data:(NSDictionary*)data {
-  [Rollbar criticalWithMessage:(NSString*)message data:data];
++ (void)infoMessage:(NSString*)message {
+  [Rollbar infoMessage:message];
 }
 
-+ (void)criticalWithData:(NSDictionary*)data {
-  [Rollbar criticalWithData:data];
++ (void)infoException:(NSException*)exception {
+  [Rollbar infoException:exception];
 }
 
-// New interface
-
-+ (void)log:(RollbarLevel)level message:(NSString*)message {
-  [Rollbar log:level message:message];
++ (void)infoError:(NSError*)error {
+  [Rollbar infoError:error];
 }
 
-+ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception {
-  [Rollbar log:level message:message exception:exception];
++ (void)infoMessage:(NSString*)message
+               data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar infoMessage:message data:data];
 }
 
-+ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
-  [Rollbar log:level message:message exception:exception data:data];
++ (void)infoException:(NSException*)exception
+                 data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar infoException:exception data:data];
 }
 
-+ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
-  [Rollbar log:level message:message exception:exception data:data context:context];
++ (void)infoError:(NSError*)error
+             data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar infoError:error data:data];
 }
 
-+ (void)debug:(NSString*)message {
-  [Rollbar debug:message];
++ (void)infoMessage:(NSString*)message
+               data:(nullable NSDictionary<NSString *, id> *)data
+            context:(nullable NSString *)context {
+  [Rollbar infoMessage:message data:data context:context];
 }
 
-+ (void)debug:(NSString*)message exception:(NSException*)exception {
-  [Rollbar debug:message exception:exception];
++ (void)infoException:(NSException*)exception
+                 data:(nullable NSDictionary<NSString *, id> *)data
+              context:(nullable NSString *)context {
+  [Rollbar infoException:exception data:data context:context];
 }
 
-+ (void)debug:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
-  [Rollbar debug:message exception:exception data:data];
++ (void)infoError:(NSError*)error
+             data:(nullable NSDictionary<NSString *, id> *)data
+          context:(nullable NSString *)context {
+  [Rollbar infoError:error data:data context:context];
 }
 
-+ (void)debug:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
-  [Rollbar debug:message exception:exception data:data context:context];
++ (void)warningMessage:(NSString*)message {
+  [Rollbar warningMessage:message];
 }
 
-+ (void)info:(NSString*)message {
-  [Rollbar info:message];
++ (void)warningException:(NSException*)exception {
+  [Rollbar warningException:exception];
 }
 
-+ (void)info:(NSString*)message exception:(NSException*)exception {
-  [Rollbar info:message exception:exception];
++ (void)warningError:(NSError*)error {
+  [Rollbar warningError:error];
 }
 
-+ (void)info:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
-  [Rollbar info:message exception:exception data:data];
++ (void)warningMessage:(NSString*)message
+                  data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar warningMessage:message data:data];
 }
 
-+ (void)info:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
-  [Rollbar info:message exception:exception data:data context:context];
++ (void)warningException:(NSException*)exception
+                    data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar warningException:exception data:data];
 }
 
-+ (void)warning:(NSString*)message {
-  [Rollbar warning:message];
++ (void)warningError:(NSError*)error
+                data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar warningError:error data:data];
 }
 
-+ (void)warning:(NSString*)message exception:(NSException*)exception {
-  [Rollbar warning:message exception:exception];
++ (void)warningMessage:(NSString*)message
+                  data:(nullable NSDictionary<NSString *, id> *)data
+               context:(nullable NSString *)context {
+  [Rollbar warningMessage:message data:data context:context];
 }
 
-+ (void)warning:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
-  [Rollbar warning:message exception:exception data:data];
++ (void)warningException:(NSException*)exception
+                    data:(nullable NSDictionary<NSString *, id> *)data
+                 context:(nullable NSString *)context {
+  [Rollbar warningException:exception data:data context:context];
 }
 
-+ (void)warning:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
-  [Rollbar warning:message exception:exception data:data context:context];
++ (void)warningError:(NSError*)error
+                data:(nullable NSDictionary<NSString *, id> *)data
+             context:(nullable NSString *)context {
+  [Rollbar warningError:error data:data context:context];
 }
 
-+ (void)error:(NSString*)message {
-  [Rollbar error:message];
++ (void)errorMessage:(NSString*)message {
+  [Rollbar errorMessage:message];
 }
 
-+ (void)error:(NSString*)message exception:(NSException*)exception {
-  [Rollbar error:message exception:exception];
++ (void)errorException:(NSException*)exception {
+  [Rollbar errorException:exception];
 }
 
-+ (void)error:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
-  [Rollbar error:message exception:exception data:data];
++ (void)errorError:(NSError*)error {
+  [Rollbar errorError:error];
 }
 
-+ (void)error:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
-  [Rollbar error:message exception:exception data:data context:context];
++ (void)errorMessage:(NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar errorMessage:message data:data];
 }
 
-+ (void)critical:(NSString*)message {
-  [Rollbar critical:message];
++ (void)errorException:(NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar errorException:exception data:data];
 }
 
-+ (void)critical:(NSString*)message exception:(NSException*)exception {
-  [Rollbar critical:message exception:exception];
++ (void)errorError:(NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar errorError:error data:data];
 }
 
-+ (void)critical:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data {
-  [Rollbar critical:message exception:exception data:data];
++ (void)errorMessage:(NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data
+             context:(nullable NSString *)context {
+  [Rollbar errorMessage:message data:data context:context];
 }
 
-+ (void)critical:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context {
-  [Rollbar critical:message exception:exception data:data context:context];
++ (void)errorException:(NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data
+               context:(nullable NSString *)context {
+  [Rollbar errorException:exception data:data context:context];
 }
 
-NSString* updateConfiguration(RollbarConfiguration *config, NSDictionary *options) {
-  NSString *accessToken = nil;
++ (void)errorError:(NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data
+           context:(nullable NSString *)context {
+  [Rollbar errorError:error data:data context:context];
+}
+
++ (void)criticalMessage:(NSString*)message {
+  [Rollbar criticalMessage:message];
+}
+
++ (void)criticalException:(NSException*)exception {
+  [Rollbar criticalException:exception];
+}
+
++ (void)criticalError:(NSError*)error {
+  [Rollbar criticalError:error];
+}
+
++ (void)criticalMessage:(NSString*)message
+                   data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar criticalMessage:message data:data];
+}
+
++ (void)criticalException:(NSException*)exception
+                     data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar criticalException:exception data:data];
+}
+
++ (void)criticalError:(NSError*)error
+                 data:(nullable NSDictionary<NSString *, id> *)data {
+  [Rollbar criticalError:error data:data];
+}
+
++ (void)criticalMessage:(NSString*)message
+                   data:(nullable NSDictionary<NSString *, id> *)data
+                context:(nullable NSString *)context {
+  [Rollbar criticalMessage:message data:data context:context];
+}
+
++ (void)criticalException:(NSException*)exception
+                     data:(nullable NSDictionary<NSString *, id> *)data
+                  context:(nullable NSString *)context {
+  [Rollbar criticalException:exception data:data context:context];
+}
+
++ (void)criticalError:(NSError*)error
+                 data:(nullable NSDictionary<NSString *, id> *)data
+              context:(nullable NSString *)context {
+  [Rollbar criticalError:error data:data context:context];
+}
+
+RollbarLevel rollbarLevelFromString(NSString *value) {
+    if (value == nil) {
+        return RollbarLevel_Info;
+    } else if ([value caseInsensitiveCompare:@"debug"] == NSOrderedSame) {
+        return RollbarLevel_Debug;
+    } else if ([value caseInsensitiveCompare:@"info"] == NSOrderedSame) {
+        return RollbarLevel_Info;
+    } else if ([value caseInsensitiveCompare:@"warning"] == NSOrderedSame) {
+        return RollbarLevel_Warning;
+    } else if ([value caseInsensitiveCompare:@"error"] == NSOrderedSame) {
+        return RollbarLevel_Error;
+    } else if ([value caseInsensitiveCompare:@"critical"] == NSOrderedSame) {
+        return RollbarLevel_Critical;
+    } else {
+        return RollbarLevel_Info;
+    }
+}
+
+void updateConfiguration(RollbarMutableConfig *config, NSDictionary *options) {
   if (options[@"accessToken"]) {
-    config.accessToken = [RCTConvert NSString:options[@"accessToken"]];
-    accessToken = config.accessToken;
+    config.destination.accessToken = [RCTConvert NSString:options[@"accessToken"]];
   }
   if (options[@"environment"]) {
-    config.environment = [RCTConvert NSString:options[@"environment"]];
+    config.destination.environment = [RCTConvert NSString:options[@"environment"]];
   }
   if (options[@"endpoint"]) {
-    config.endpoint = [RCTConvert NSString:options[@"endpoint"]];
+    config.destination.endpoint = [RCTConvert NSString:options[@"endpoint"]];
+  }
+  if (options[@"enabled"]) {
+    id enabledJSON = [options objectForKey:@"enabled"];
+    BOOL enabled = YES;
+    if (enabledJSON != nil) {
+      enabled = [RCTConvert BOOL:enabledJSON];
+    }
+    config.developerOptions.enabled = enabled;
+  }
+  if (options[@"crashLevel"]) {
+    config.loggingOptions.crashLevel = rollbarLevelFromString([RCTConvert NSString:options[@"crashLevel"]]);
   }
   if (options[@"logLevel"]) {
-    config.crashLevel = [RCTConvert NSString:options[@"logLevel"]];
+    config.loggingOptions.logLevel = rollbarLevelFromString([RCTConvert NSString:options[@"logLevel"]]);
   }
   if (options[@"notifier"]) {
     NSDictionary *notifierConfig = [RCTConvert NSDictionary:options[@"notifier"]];
@@ -219,43 +367,35 @@ NSString* updateConfiguration(RollbarConfiguration *config, NSDictionary *option
   if (options[@"framework"]) {
     framework = [RCTConvert NSString:options[@"framework"]];
   }
-  [config setCodeFramework:framework];
-
-  return accessToken;
+  config.loggingOptions.framework = framework;
 }
 
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
-  RollbarConfiguration *config = [Rollbar currentConfiguration];
+  RollbarMutableConfig *config = (RollbarMutableConfig *)[Rollbar configuration];
   if (config) {
     updateConfiguration(config, options);
     return;
   }
-  config = [RollbarConfiguration configuration];
-  NSString *accessToken = updateConfiguration(config, options);
+  config = [RollbarConfig mutableConfigWithAccessToken:[RCTConvert NSString:options[@"accessToken"]]];
+  updateConfiguration(config, options);
 
-  id enabledJSON = [options objectForKey:@"enabled"];
-  BOOL enabled = YES;
-  if (enabledJSON != nil) {
-    enabled = [RCTConvert BOOL:enabledJSON];
-  }
-
-  [Rollbar initWithAccessToken:accessToken configuration:config enableCrashReporter:enabled];
+  [Rollbar initWithConfiguration:config];
 }
 
 RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
   NSString *identifier = personInfo[@"id"] && ![personInfo[@"id"] isEqual:[NSNull null]]
-    ? [RCTConvert NSString:personInfo[@"id"]] : nil;
+    ? [RCTConvert NSString:personInfo[@"id"]] : @"";
   NSString *name = personInfo[@"name"] && ![personInfo[@"name"] isEqual:[NSNull null]]
     ? [RCTConvert NSString:personInfo[@"name"]] : nil;
   NSString *email = personInfo[@"email"] && ![personInfo[@"email"] isEqual:[NSNull null]]
     ? [RCTConvert NSString:personInfo[@"email"]] : nil;
-  [[Rollbar currentConfiguration] setPersonId:identifier username:name email:email];
+  [((RollbarMutableConfig *)[Rollbar configuration]) setPersonId:identifier username:name email:email];
 }
 
 RCT_EXPORT_METHOD(clearPerson) {
-  [[Rollbar currentConfiguration] setPersonId:nil username:nil email:nil];
+  [((RollbarMutableConfig *)[Rollbar configuration]) setPersonId:@"" username:nil email:nil];
 }
 
 // Defined as synchronous because the data must be returned in the
