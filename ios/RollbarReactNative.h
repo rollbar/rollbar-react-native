@@ -3,78 +3,169 @@
 #else
 #import "RCTBridgeModule.h"
 #endif
-#if __has_include(<Rollbar/Rollbar.h>)
-#import <Rollbar/Rollbar.h>
-#else
-#import "Rollbar.h"
-#endif
 
 @interface RollbarReactNative : NSObject <RCTBridgeModule>
 
-+ (void)initWithAccessToken:(NSString *)accessToken;
-+ (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration *)config;
-+ (void)initWithAccessToken:(NSString *)accessToken configuration:(RollbarConfiguration*)configuration enableCrashReporter:(BOOL)enable;
++ (void)initWithConfiguration:(nonnull NSDictionary *)configuration;
 
-// Old methods for backwards compatability
++ (void)log:(nonnull NSString*)level message:(nonnull NSString*)message;
++ (void)log:(nonnull NSString*)level exception:(nonnull NSException*)exception;
++ (void)log:(nonnull NSString*)level error:(nonnull NSError*)error;
 
-+ (void)logWithLevel:(NSString*)level message:(NSString*)message;
-+ (void)logWithLevel:(NSString*)level message:(NSString*)message data:(NSDictionary*)data;
-+ (void)logWithLevel:(NSString*)level data:(NSDictionary*)data;
++ (void)log:(nonnull NSString*)level
+    message:(nonnull NSString*)message
+       data:(nullable NSDictionary<NSString *, id> *)data;
 
-+ (void)debugWithMessage:(NSString*)message;
-+ (void)debugWithMessage:(NSString*)message data:(NSDictionary*)data;
-+ (void)debugWithData:(NSDictionary*)data;
++ (void)log:(nonnull NSString*)level
+    exception:(nonnull NSException*)exception
+         data:(nullable NSDictionary<NSString *, id> *)data;
 
-+ (void)infoWithMessage:(NSString*)message;
-+ (void)infoWithMessage:(NSString*)message data:(NSDictionary*)data;
-+ (void)infoWithData:(NSDictionary*)data;
++ (void)log:(nonnull NSString*)level
+      error:(nonnull NSError*)error
+       data:(nullable NSDictionary<NSString *, id> *)data;
 
-+ (void)warningWithMessage:(NSString*)message;
-+ (void)warningWithMessage:(NSString*)message data:(NSDictionary*)data;
-+ (void)warningWithData:(NSDictionary*)data;
++ (void)log:(nonnull NSString*)level
+    message:(nonnull NSString*)message
+       data:(nullable NSDictionary<NSString *, id> *)data
+    context:(nullable NSString *)context;
 
-+ (void)errorWithMessage:(NSString*)message;
-+ (void)errorWithMessage:(NSString*)message data:(NSDictionary*)data;
-+ (void)errorWithData:(NSDictionary*)data;
++ (void)log:(nonnull NSString*)level
+    exception:(nonnull NSException*)exception
+         data:(nullable NSDictionary<NSString *, id> *)data
+      context:(nullable NSString *)context;
 
-+ (void)criticalWithMessage:(NSString*)message;
-+ (void)criticalWithMessage:(NSString*)message data:(NSDictionary*)data;
-+ (void)criticalWithData:(NSDictionary*)data;
++ (void)log:(nonnull NSString*)level
+      error:(nonnull NSError*)error
+       data:(nullable NSDictionary<NSString *, id> *)data
+    context:(nullable NSString *)context;
 
-// New interface
++ (void)debugMessage:(nonnull NSString*)message;
++ (void)debugException:(nonnull NSException*)exception;
++ (void)debugError:(nonnull NSError*)error;
 
-+ (void)log:(RollbarLevel)level message:(NSString*)message;
-+ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception;
-+ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data;
-+ (void)log:(RollbarLevel)level message:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context;
++ (void)debugMessage:(nonnull NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data;
 
-+ (void)debug:(NSString*)message;
-+ (void)debug:(NSString*)message exception:(NSException*)exception;
-+ (void)debug:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data;
-+ (void)debug:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context;
++ (void)debugException:(nonnull NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data;
 
-+ (void)info:(NSString*)message;
-+ (void)info:(NSString*)message exception:(NSException*)exception;
-+ (void)info:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data;
-+ (void)info:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context;
++ (void)debugError:(nonnull NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data;
 
-+ (void)warning:(NSString*)message;
-+ (void)warning:(NSString*)message exception:(NSException*)exception;
-+ (void)warning:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data;
-+ (void)warning:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context;
++ (void)debugMessage:(nonnull NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data
+             context:(nullable NSString *)context;
 
-+ (void)error:(NSString*)message;
-+ (void)error:(NSString*)message exception:(NSException*)exception;
-+ (void)error:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data;
-+ (void)error:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context;
++ (void)debugException:(nonnull NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data
+               context:(nullable NSString *)context;
 
-+ (void)critical:(NSString*)message;
-+ (void)critical:(NSString*)message exception:(NSException*)exception;
-+ (void)critical:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data;
-+ (void)critical:(NSString*)message exception:(NSException*)exception data:(NSDictionary*)data context:(NSString*)context;
++ (void)debugError:(nonnull NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data
+           context:(nullable NSString *)context;
 
-- (void)init:(NSDictionary *)options;
-- (void)setPerson:(NSDictionary *)personInfo;
++ (void)infoMessage:(nonnull NSString*)message;
++ (void)infoException:(nonnull NSException*)exception;
++ (void)infoError:(nonnull NSError*)error;
+
++ (void)infoMessage:(nonnull NSString*)message
+               data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)infoException:(nonnull NSException*)exception
+                 data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)infoError:(nonnull NSError*)error
+             data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)infoMessage:(nonnull NSString*)message
+               data:(nullable NSDictionary<NSString *, id> *)data
+            context:(nullable NSString *)context;
+
++ (void)infoException:(nonnull NSException*)exception
+                 data:(nullable NSDictionary<NSString *, id> *)data
+              context:(nullable NSString *)context;
+
++ (void)infoError:(nonnull NSError*)error
+             data:(nullable NSDictionary<NSString *, id> *)data
+          context:(nullable NSString *)context;
+
++ (void)warningMessage:(nonnull NSString*)message;
++ (void)warningException:(nonnull NSException*)exception;
++ (void)warningError:(nonnull NSError*)error;
+
++ (void)warningMessage:(nonnull NSString*)message
+                  data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)warningException:(nonnull NSException*)exception
+                    data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)warningError:(nonnull NSError*)error
+                data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)warningMessage:(nonnull NSString*)message
+                  data:(nullable NSDictionary<NSString *, id> *)data
+               context:(nullable NSString *)context;
+
++ (void)warningException:(nonnull NSException*)exception
+                    data:(nullable NSDictionary<NSString *, id> *)data
+                 context:(nullable NSString *)context;
+
++ (void)warningError:(nonnull NSError*)error
+                data:(nullable NSDictionary<NSString *, id> *)data
+             context:(nullable NSString *)context;
+
++ (void)errorMessage:(nonnull NSString*)message;
++ (void)errorException:(nonnull NSException*)exception;
++ (void)errorError:(nonnull NSError*)error;
+
++ (void)errorMessage:(nonnull NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)errorException:(nonnull NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)errorError:(nonnull NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)errorMessage:(nonnull NSString*)message
+                data:(nullable NSDictionary<NSString *, id> *)data
+             context:(nullable NSString *)context;
+
++ (void)errorException:(nonnull NSException*)exception
+                  data:(nullable NSDictionary<NSString *, id> *)data
+               context:(nullable NSString *)context;
+
++ (void)errorError:(nonnull NSError*)error
+              data:(nullable NSDictionary<NSString *, id> *)data
+           context:(nullable NSString *)context;
+
++ (void)criticalMessage:(nonnull NSString*)message;
++ (void)criticalException:(nonnull NSException*)exception;
++ (void)criticalError:(nonnull NSError*)error;
+
++ (void)criticalMessage:(nonnull NSString*)message
+                   data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)criticalException:(nonnull NSException*)exception
+                     data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)criticalError:(nonnull NSError*)error
+                 data:(nullable NSDictionary<NSString *, id> *)data;
+
++ (void)criticalMessage:(nonnull NSString*)message
+                   data:(nullable NSDictionary<NSString *, id> *)data
+                context:(nullable NSString *)context;
+
++ (void)criticalException:(nonnull NSException*)exception
+                     data:(nullable NSDictionary<NSString *, id> *)data
+                  context:(nullable NSString *)context;
+
++ (void)criticalError:(nonnull NSError*)error
+                 data:(nullable NSDictionary<NSString *, id> *)data
+              context:(nullable NSString *)context;
+
+- (void)init:(nonnull NSDictionary *)options;
+- (void)setPerson:(nonnull NSDictionary *)personInfo;
 - (void)clearPerson;
 
 @end

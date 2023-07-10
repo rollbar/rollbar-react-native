@@ -1,5 +1,7 @@
 export class Client {
-  constructor(config: Configuration | string);
+  constructor(config: ConfigurationOptions);
+
+  public rollbar: Rollbar;
 
   public captureUncaughtExceptions(): void;
   public captureUnhandledRejections(): void;
@@ -11,12 +13,12 @@ export class Client {
   public error(obj: LogArgument, extra?: Extra, callback?: Callback): LogResult;
   public critical(obj: LogArgument, extra?: Extra, callback?: Callback): LogResult;
 
-  public setPerson(id: string, name?: string, email?: string): void;
+  public setPerson(id: string | null, name?: string | null, email?: string | null): void;
   public clearPerson(): void;
 }
 
 export class Configuration {
-  constructor(accessToken: string, options?: ConfigurationOptions);
+  constructor(options?: ConfigurationOptions);
   public setPlatform(platform: string): void;
   public toJSON(): object;
 }
@@ -29,20 +31,5 @@ export interface LogResult {
 export type MaybeError = Error | undefined | null;
 export type Callback = (err: MaybeError, response: object) => void;
 
-export interface ConfigurationOptions {
-  environment?: string;
-  logLevel?: string;
-  reportLevel?: string;
-  endpoint?: string;
-  appVersion?: string;
-  codeBundleId?: string;
-  releaseStage?: string;
-  enabledReleaseStages?: string[];
-  captureUncaught?: boolean;
-  captureUnhandledRejections?: boolean;
-  captureDeviceInfo?: boolean;
-  payload?: object;
-  enabled?: boolean;
-  verbose?: boolean;
-  transform?: (data: object) => void;
-}
+export type Rollbar = import("rollbar").Rollbar;
+export type ConfigurationOptions = import("rollbar").Configuration;
