@@ -19,7 +19,7 @@ static NSString *const NOTIFIER_VERSION = @"1.0.0-beta.0";
 static NSString *const REACT_NATIVE = @"react-native";
 
 + (void)initWithConfiguration:(NSDictionary*)options {
-  RollbarMutableConfig *config = ((RollbarMutableConfig *)[Rollbar configuration]);
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
   if (config) {
     updateConfiguration(config, options);
     return;
@@ -373,7 +373,7 @@ void updateConfiguration(RollbarMutableConfig *config, NSDictionary *options) {
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
-  RollbarMutableConfig *config = (RollbarMutableConfig *)[Rollbar configuration];
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
   if (config) {
     updateConfiguration(config, options);
     return;
@@ -391,11 +391,11 @@ RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
     ? [RCTConvert NSString:personInfo[@"name"]] : nil;
   NSString *email = personInfo[@"email"] && ![personInfo[@"email"] isEqual:[NSNull null]]
     ? [RCTConvert NSString:personInfo[@"email"]] : nil;
-  [((RollbarMutableConfig *)[Rollbar configuration]) setPersonId:identifier username:name email:email];
+  [[[Rollbar configuration] mutableCopy] setPersonId:identifier username:name email:email];
 }
 
 RCT_EXPORT_METHOD(clearPerson) {
-  [((RollbarMutableConfig *)[Rollbar configuration]) setPersonId:@"" username:nil email:nil];
+  [[[Rollbar configuration] mutableCopy] setPersonId:@"" username:nil email:nil];
 }
 
 // Defined as synchronous because the data must be returned in the
