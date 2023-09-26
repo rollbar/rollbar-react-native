@@ -19,9 +19,10 @@ static NSString *const NOTIFIER_VERSION = @"1.0.0-beta.0";
 static NSString *const REACT_NATIVE = @"react-native";
 
 + (void)initWithConfiguration:(NSDictionary*)options {
-  RollbarMutableConfig *config = ((RollbarMutableConfig *)[Rollbar configuration]);
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
   if (config) {
     updateConfiguration(config, options);
+    [Rollbar updateWithConfiguration:config];
     return;
   }
   config = [RollbarConfig mutableConfigWithAccessToken:[RCTConvert NSString:options[@"accessToken"]]];
@@ -373,9 +374,10 @@ void updateConfiguration(RollbarMutableConfig *config, NSDictionary *options) {
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
-  RollbarMutableConfig *config = (RollbarMutableConfig *)[Rollbar configuration];
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
   if (config) {
     updateConfiguration(config, options);
+      [Rollbar updateWithConfiguration:config];
     return;
   }
   config = [RollbarConfig mutableConfigWithAccessToken:[RCTConvert NSString:options[@"accessToken"]]];
@@ -391,11 +393,15 @@ RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
     ? [RCTConvert NSString:personInfo[@"name"]] : nil;
   NSString *email = personInfo[@"email"] && ![personInfo[@"email"] isEqual:[NSNull null]]
     ? [RCTConvert NSString:personInfo[@"email"]] : nil;
-  [((RollbarMutableConfig *)[Rollbar configuration]) setPersonId:identifier username:name email:email];
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
+  [config setPersonId:identifier username:name email:email];
+  [Rollbar updateWithConfiguration:config];
 }
 
 RCT_EXPORT_METHOD(clearPerson) {
-  [((RollbarMutableConfig *)[Rollbar configuration]) setPersonId:@"" username:nil email:nil];
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
+  [config setPersonId:@"" username:nil email:nil];
+  [Rollbar updateWithConfiguration:config];
 }
 
 // Defined as synchronous because the data must be returned in the
