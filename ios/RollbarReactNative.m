@@ -22,6 +22,7 @@ static NSString *const REACT_NATIVE = @"react-native";
   RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
   if (config) {
     updateConfiguration(config, options);
+    [Rollbar updateWithConfiguration:config];
     return;
   }
   config = [RollbarConfig mutableConfigWithAccessToken:[RCTConvert NSString:options[@"accessToken"]]];
@@ -376,6 +377,7 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
   RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
   if (config) {
     updateConfiguration(config, options);
+      [Rollbar updateWithConfiguration:config];
     return;
   }
   config = [RollbarConfig mutableConfigWithAccessToken:[RCTConvert NSString:options[@"accessToken"]]];
@@ -391,11 +393,15 @@ RCT_EXPORT_METHOD(setPerson:(NSDictionary *)personInfo) {
     ? [RCTConvert NSString:personInfo[@"name"]] : nil;
   NSString *email = personInfo[@"email"] && ![personInfo[@"email"] isEqual:[NSNull null]]
     ? [RCTConvert NSString:personInfo[@"email"]] : nil;
-  [[[Rollbar configuration] mutableCopy] setPersonId:identifier username:name email:email];
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
+  [config setPersonId:identifier username:name email:email];
+  [Rollbar updateWithConfiguration:config];
 }
 
 RCT_EXPORT_METHOD(clearPerson) {
-  [[[Rollbar configuration] mutableCopy] setPersonId:@"" username:nil email:nil];
+  RollbarMutableConfig *config = [[Rollbar configuration] mutableCopy];
+  [config setPersonId:@"" username:nil email:nil];
+  [Rollbar updateWithConfiguration:config];
 }
 
 // Defined as synchronous because the data must be returned in the
