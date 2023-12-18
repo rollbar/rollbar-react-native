@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'RollbarReactNative'
-  s.version      = '1.0.0-beta.1'
+  s.version      = '1.0.0-beta.2'
   s.summary      = 'RollbarReactNative'
   s.description  = <<-DESC
                   RollbarReactNative is a library for interacting with the Rollbar
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.license      = 'MIT'
   s.author       = { 'Rollbar' => 'support@rollbar.com' }
   s.platform     = :ios, '7.0'
-  s.source       = { :git => 'https://github.com/rollbar/rollbar-react-native.git', :tag => '1.0.0-beta.1' }
+  s.source       = { :git => 'https://github.com/rollbar/rollbar-react-native.git', :tag => '1.0.0-beta.2' }
   s.requires_arc = true
 
   s.dependency 'React-Core'
