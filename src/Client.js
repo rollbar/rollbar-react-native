@@ -32,7 +32,7 @@ export class Client {
       const previousHandler = ErrorUtils.getGlobalHandler();
 
       ErrorUtils.setGlobalHandler((error, isFatal) => {
-        if (this.config.captureUncaught && this.config.shouldSend()) {
+        if (this.config.options.captureUncaught && this.config.shouldSend()) {
           this.error(error, undefined, (queued) => {
             if (previousHandler) {
               previousHandler(error, isFatal);
