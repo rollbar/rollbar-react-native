@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'React-Core'
-  s.dependency 'RollbarNotifier', '3.2.0'
+  s.dependency 'RollbarNotifier', '3.3.1'
   s.source_files  = 'ios/RollbarReactNative.{h,m}'
   s.public_header_files = 'ios/RollbarReactNative.h'
 
