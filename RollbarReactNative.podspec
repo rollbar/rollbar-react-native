@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage     = 'https://rollbar.com'
   s.license      = 'MIT'
   s.author       = { 'Rollbar' => 'support@rollbar.com' }
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '13.0'
   s.source       = { :git => 'https://github.com/rollbar/rollbar-react-native.git', :tag => '1.0.0-beta.2' }
   s.requires_arc = true
 
