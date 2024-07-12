@@ -30,7 +30,7 @@ import com.rollbar.notifier.config.ConfigProvider;
 public class RollbarReactNative extends ReactContextBaseJavaModule {
   private static final String REACT_NATIVE = "react-native";
   private static final String NOTIFIER_NAME = "rollbar-react-native";
-  private static final String NOTIFIER_VERSION = "1.0.0-beta.2";
+  private static final String NOTIFIER_VERSION = "1.0.0-beta.3";
   private static final String MANIFEST_CODE_VERSION = "com.rollbar.android.CODE_VERSION";
 
   private ReactContext reactContext;
