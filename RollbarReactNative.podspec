@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.license      = 'MIT'
   s.author       = { 'Rollbar' => 'support@rollbar.com' }
   s.platform     = :ios, '13.0'
-  s.source       = { :git => 'https://github.com/rollbar/rollbar-react-native.git', :tag => 'v1.0.0-beta.4a' }
+  s.source       = { :git => 'https://github.com/rollbar/rollbar-react-native.git', :tag => 'v1.0.0-beta.4' }
   s.requires_arc = true
 
   s.dependency 'React-Core'
