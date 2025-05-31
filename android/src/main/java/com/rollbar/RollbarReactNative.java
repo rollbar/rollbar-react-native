@@ -41,6 +41,7 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
 
   public RollbarReactNative(ReactApplicationContext reactContext) {
     super(reactContext);
+    Rollbar.init(reactContext);
     this.reactContext = reactContext;
   }
 
