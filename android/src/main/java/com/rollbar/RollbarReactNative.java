@@ -525,12 +525,16 @@ public class RollbarReactNative extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void init(ReadableMap options) {
+    Rollbar rollbar = Rollbar.instance();
+    if (rollbar == null) {
+      return;
+    }
     final String environment = options.hasKey("environment") ? options.getString("environment") : "production";
     final String platform = options.hasKey("platform") ? options.getString("platform") : "android";
     final String notifier_version = options.hasKey("notifier") ? options.getMap("notifier").getString("version") : NOTIFIER_VERSION;
     final String notifier_name = options.hasKey("notifier") ? options.getMap("notifier").getString("name") : NOTIFIER_NAME;
     final boolean enabled = options.hasKey("enabled") ? options.getBoolean("enabled") : true;
-    Rollbar.instance().configure(new ConfigProvider() {
+    rollbar.configure(new ConfigProvider() {
       @Override
       public Config provide(ConfigBuilder builder) {
         return builder
