@@ -13,11 +13,11 @@
   },
   "peerDependencies": {
     "react-native": ">=0.50",
-    "promise": ">=7.1.1",
     "rollbar": "^2.26.1"
   },
   "dependencies": {
     "buffer": "^4.9.1 || ^5.0.7",
+    "promise": ">=7.1.1",
     "url": "^0.11.0"
   },
   "devDependencies": {
