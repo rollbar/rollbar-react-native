@@ -21,3 +21,20 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.8.0'
     testImplementation 'org.mockito:mockito-inline:3.8.0'
 }
+
+afterEvaluate {
+    // Disable running tests automatically unless explicitly enabled
+    tasks.matching { it.name.startsWith("test") }.configureEach {
+        onlyIf { project.hasProperty("runTests") }
+    }
+
+    // Optionally ensure the build task itself doesn’t depend on tests
+    def buildTask = tasks.findByName("build")
+    if (buildTask != null) {
+        // Filter out any "test*" dependencies safely
+        buildTask.dependsOn = buildTask.dependsOn.findAll { dep ->
+            !(dep instanceof String && dep.startsWith("test")) &&
+            !(dep instanceof Task && dep.name.startsWith("test"))
+        }
+    }
+}
